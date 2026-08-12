@@ -1,0 +1,118 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+docs: https://api-docs.finditparts.com/
+format: proprietary
+note: >-
+  FinditParts publishes a single, complete numeric error registry in the "Errors"
+  section of its own Reseller API documentation. This is NOT RFC 9457 problem+json —
+  every error, at every status, is returned as the same two-field envelope on
+  application/json. The registry below is transcribed verbatim from the provider's
+  published list; the remediation column is derived from the operation semantics in
+  openapi/finditparts-reseller-api-openapi.yml and is marked as such.
+envelope:
+  media_type: application/json
+  shape:
+    errno: integer
+    message: string
+  example: |
+    {
+      "errno": 99,
+      "message": "..."
+    }
+  schema: openapi/finditparts-reseller-api-openapi.yml#/components/schemas/ApiError
+  note: >-
+    errno is also present on many 200 responses (listOrders, listAddresses,
+    createAddress, cart operations), so a 2xx status alone is not a success signal —
+    an agent must read errno and treat any non-zero value as a failure.
+success_sentinel:
+  field: errno
+  value: 0
+errors:
+- errno: 0
+  title: No error
+  meaning: No error.
+  action: None — this is the success sentinel.
+- errno: 1
+  title: No part number provided
+  meaning: No part number provided.
+  action: 'Derived: productSearch requires one of part_number or query;
+    lookupProductByPartNumber requires part_number. Supply one and retry.'
+  operations:
+  - productSearch
+  - lookupProductByPartNumber
+- errno: 2
+  title: Invalid address provided
+  meaning: Invalid address provided.
+  action: 'Derived: correct the address fields (address1, city, state, zipcode, country,
+    address_type) and retry. Not retryable unchanged.'
+  operations:
+  - shippingMethods
+  - createAddress
+  - updateAddress
+  - setCartShippingAddress
+  - setCartBillingAddress
+  - partnersShippingMethods
+- errno: 3
+  title: Product or variant unavailable for sale
+  meaning: Product or variant requested is unavailable for sale.
+  action: 'Derived: re-check sellable and the variant quantity via getProduct or
+    variantLookup, then select an available variant. Not retryable unchanged.'
+  operations:
+  - addCartLineItem
+  - partnersPlaceOrder
+- errno: 4
+  title: Invalid order
+  meaning: Invalid order. Line items or the variant selected may not meet requirements.
+  action: 'Derived: check line-item quantity against the variant minimum and pack_quantity
+    before retrying. Not retryable unchanged.'
+  operations:
+  - completeCartWithCreditCard
+  - completeCartWithCorporateBilling
+  - partnersPlaceOrder
+  - createResellerCustomerSession
+- errno: 5
+  title: Order is not cancelable
+  meaning: Order is not cancelable.
+  action: 'Derived: the order has advanced past the cancelable window. Do not retry;
+    use the returns/RMA process instead.'
+  operations:
+  - cancelResellerCustomerSession
+- errno: 6
+  title: Invalid credentials
+  meaning: Invalid credentials.
+  action: 'Derived: the JWT signature, iss, exp or the API key is wrong or expired.
+    Re-sign a fresh JWT (or call refreshSession) and retry once. Do not retry in a loop.'
+  auth_related: true
+- errno: 7
+  title: Invalid user
+  meaning: Invalid user.
+  action: 'Derived: the sub Customer Reference is not linked to a FinditParts account.
+    Run a USER_SETUP reseller customer session for that Customer Reference first.'
+  auth_related: true
+- errno: 99
+  title: Unknown error
+  meaning: Unknown error.
+  action: 'Derived: treat as a server-side fault. Safe to retry idempotent reads with
+    backoff; do NOT blindly retry order placement — FinditParts publishes no idempotency
+    key, so a retried checkout may duplicate the order.'
+  retryable: conditional
+- errno: 404
+  title: Not Found
+  meaning: Not Found.
+  action: 'Derived: the addressed product, variant, cart, order, address or session id
+    does not exist or is not visible to this credential. Not retryable unchanged.'
+http_statuses_documented:
+- status: 200
+  description: Success envelope. May still carry a non-zero errno — check it.
+- status: 500
+  description: >-
+    The only non-2xx status the published collection carries an example for. Every
+    operation documents a 500 "API error" returning the errno/message envelope, which
+    means FinditParts does not map its error registry onto distinct HTTP status codes.
+gaps:
+- No RFC 9457 application/problem+json.
+- No machine-readable error type URIs.
+- No distinct HTTP status per error class — 500 carries application errors that are
+  semantically 400/401/403/404.
+- No documented retry guidance or Retry-After.

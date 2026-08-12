@@ -1,0 +1,33 @@
+{
+  "shipping_methods": [
+    {
+      "id": "<integer>",
+      "label": "<string>",
+      "amount": "<float>",
+      "identifier": "<string>",
+      "currency": "<string>",
+      "carrier_type": "ups",
+      "detail": "<string>",
+      "days_to_deliver": "<integer>",
+      "estimated_delivery_date": "<string>",
+      "available": "<boolean>",
+      "url": "<string>",
+      "manufacturer": "<string>"
+    },
+    {
+      "id": "<integer>",
+      "label": "<string>",
+      "amount": "<float>",
+      "identifier": "<string>",
+      "currency": "<string>",
+      "carrier_type": "ups",
+      "detail": "<string>",
+      "days_to_deliver": "<integer>",
+      "estimated_delivery_date": "<string>",
+      "available": "<boolean>",
+      "url": "<string>",
+      "manufacturer": "<string>"
+    }
+  ],
+  "errno": "<integer>"
+}

@@ -1,0 +1,102 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+docs: https://api-docs.finditparts.com/
+note: >-
+  Upgraded from the mechanically derived profile using the authentication section
+  FinditParts publishes in the overview of its own "FinditParts Reseller API 2.0.1"
+  Postman documentation. FinditParts uses no OAuth 2.0 and no OpenID Connect — there
+  is no authorization server, no scope surface and no consent screen, so no
+  scopes/ artifact is emitted for this provider. Both credentials travel in the same
+  Authorization: Bearer header, which is why a purely spec-derived profile collapses
+  them into one http/bearer scheme; the two are distinct credential types with
+  distinct capability, and are recorded separately here.
+summary:
+  types:
+  - http
+  http_schemes:
+  - bearer
+  bearer_formats:
+  - JWT
+  - opaque-api-key
+  oauth2_flows: []
+  api_key_in: []
+  credential_issuance: manual
+  credential_issuer: FinditParts (Reseller Client ID + Reseller Client Secret, and an API key,
+    are issued by FinditParts to approved reseller/partner clients)
+schemes:
+- name: resellerJWT
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  algorithm: HS256
+  signing_key: Reseller Client Secret (provided by FinditParts)
+  header: 'Authorization: Bearer JWT.TOKEN.HERE'
+  per_request: true
+  description: >-
+    A separately generated, short-lived JWT for each request, signed with the
+    Reseller Client Secret using HS256.
+  claims:
+  - claim: iss
+    required: true
+    description: The Reseller Client ID provided by FinditParts.
+  - claim: exp
+    required: true
+    description: Expiration. FinditParts instructs that this be kept as short as reasonable
+      to prevent requests from being replayed.
+  - claim: sub
+    required: conditional
+    description: The Customer Reference. Required on endpoints that act on behalf of a
+      specific customer (createResellerCustomerSession, shippingMethods, and productSearch
+      when account-specific pricing is wanted). Omitting sub returns generic list pricing
+      rather than account pricing.
+  - claim: data.intent
+    required: conditional
+    description: Declares the purpose of the call. Documented values are PRODUCT_SEARCH,
+      SHIPPING_METHODS, USER_SETUP and NEW_ORDER.
+  - claim: data
+    required: conditional
+    description: On shippingMethods the JWT may carry the line_items/address payload
+      inside data as an alternative to sending them as query parameters.
+  sources:
+  - https://api-docs.finditparts.com/
+  - openapi/finditparts-reseller-api-openapi.yml
+- name: apiKey
+  type: http
+  scheme: bearer
+  bearerFormat: opaque-api-key
+  key_prefix: api-
+  key_shape: api-XYZ123
+  header: 'Authorization: Bearer api-XYZ123'
+  description: >-
+    An issued API key, for client-side apps that cannot hold a JWT signing secret —
+    FinditParts names mobile apps and single-buyer partner applications. Issued to
+    reseller clients alongside the JWT credentials.
+  grants:
+  - Non-user-specific endpoints — product search, create session, create user
+  - The Partner surface (partnersShippingMethods, partnersPlaceOrder) requires a Partner API key
+  - The Master Account surface (listResellerCustomers) requires a Master Account API key
+  restrictions: >-
+    User-specific calls (user-specific pricing in product search, cart operations,
+    order creation and order history) are not reachable with the API key alone. An
+    API-key client must first exchange a user's credentials for a user-specific JWT
+    via createSession (that call itself still requires the API key), then present
+    the returned user JWT as Authorization: Bearer USER.JWT.TOKEN.
+  sources:
+  - https://api-docs.finditparts.com/
+token_lifecycle:
+- token: reseller request JWT
+  ttl: per-request, issuer-chosen (docs instruct "as short as reasonable")
+  refresh: regenerate and sign a new token for every request
+- token: user-specific session JWT
+  ttl: 1 month (default, per the createSession and refreshSession documentation)
+  refresh: refreshSession returns a new user-specific JWT; call it prior to expiration
+  revocation: destroySessions destroys the current sessions for the user
+alternate_credentials:
+- name: cart token
+  description: >-
+    Every cart operation documents "Requires a user specific JWT in the Authorization
+    header or a cart token parameter" — an anonymous cart-scoped credential passed as
+    a request parameter. FinditParts does not document the parameter name or issuance
+    in the public collection.
+  documented: partial

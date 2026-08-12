@@ -1,0 +1,4 @@
+{
+  "errno": "<integer>",
+  "message": "<string>"
+}

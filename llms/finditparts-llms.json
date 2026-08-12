@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "site": {
+    "name": "FinditParts",
+    "url": "https://www.finditparts.com",
+    "summary": "Online marketplace for heavy-duty truck, trailer, fleet, and industrial replacement parts."
+  },
+  "primary_guidance_url": "https://www.finditparts.com/llms.txt",
+  "note": "Guidance for AI assistants and LLM crawlers. Does not override robots.txt, page-level robots directives, canonical tags, terms of use, or access controls.",
+  "discovery": {
+    "sitemap": "https://www.finditparts.com/sitemap.xml",
+    "robots": "https://www.finditparts.com/robots.txt",
+    "llms_txt": "https://www.finditparts.com/llms.txt"
+  },
+  "product_pages": {
+    "description": "Product detail pages are the authoritative source for a specific part.",
+    "canonical_source_of_truth": "HTML link rel=canonical and Product JSON-LD offers.url",
+    "url_patterns": {
+      "primary": "https://www.finditparts.com/products/{product_id}/{manufacturer-part-slug}",
+      "pretty": "https://www.finditparts.com/p/{manufacturer-part-slug}-{product_id}",
+      "qa": [
+        "https://www.finditparts.com/products/{product_id}/{manufacturer-part-slug}/q/{question_id}",
+        "https://www.finditparts.com/p/{manufacturer-part-slug}-{product_id}/q/{question_id}"
+      ]
+    },
+    "content_may_include": [
+      "Product name, part number, MPN, SKU, GTIN",
+      "Manufacturer, brand, category breadcrumbs",
+      "Images, condition, description, specifications, PIES and CMS copy",
+      "Price, availability, shipping, pack quantity",
+      "Cross references, fitment/application data, related products",
+      "Approved reviews, ratings, product questions, and staff answers",
+      "Schema.org Product and FAQPage JSON-LD in the HTML head"
+    ]
+  },
+  "interpretation_guidance": [
+    "Preserve exact part numbers and manufacturer spelling from the page.",
+    "Do not infer fitment, interchange, compatibility, inventory, or pricing unless explicitly on the page.",
+    "Verify live PDPs before citing price or availability.",
+    "Do not cite noindex or unavailable pages as primary sources.",
+    "Do not use checkout, account, cart, order, admin, or internal API pages as product data sources."
+  ],
+  "crawl_behavior": [
+    "Respect robots.txt and reasonable crawl rates.",
+    "Avoid high-frequency PDP refetching for price or availability only.",
+    "Do not execute purchase flows, forms, or personalization endpoints.",
+    "Do not use XHR/JSON endpoints as standalone citation pages."
+  ],
+  "optional_links": {
+    "contact": "https://www.finditparts.com/contact",
+    "returns_policy": "https://www.finditparts.com/no_hassle_returns"
+  }
+}

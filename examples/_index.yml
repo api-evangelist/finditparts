@@ -1,0 +1,400 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+note: Real 200-response example payloads for every operation of the FinditParts Reseller API, extracted
+  VERBATIM from the first-party Postman collection FinditParts publishes at https://api-docs.finditparts.com/
+  (saved whole at postman/finditparts-reseller-api-postman.json). Nothing is synthesized. The <string>/<integer>/<boolean>/<float>/<dateTime>
+  tokens are Postman's rendering of the provider's own declared field types, not redactions, and literal
+  values such as "ups", "commercial" or "delivered" are real enum members FinditParts showed. The same
+  payloads are also inlined as response examples in openapi/finditparts-reseller-api-openapi.yml.
+example_count: 38
+examples:
+- file: finditparts-get-product-200.json
+  operationId: getProduct
+  summary: Product Details
+  tag: Products
+  request: GET /products/{product_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - product
+  - errno
+- file: finditparts-get-products-multi-200.json
+  operationId: getProductsMulti
+  summary: Product Details Multi
+  tag: Products
+  request: GET /products/{product_ids}/multi
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - products
+  - errno
+- file: finditparts-lookup-product-by-part-number-200.json
+  operationId: lookupProductByPartNumber
+  summary: Lookup Product by Part Number
+  tag: Products
+  request: GET /products/lookup
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - part_number_matches
+  - cross_reference_matches
+  - errno
+- file: finditparts-product-search-200.json
+  operationId: productSearch
+  summary: Product Search
+  tag: Products
+  request: GET /products
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - products
+  - pagination
+  - errno
+  - aggs
+- file: finditparts-variant-lookup-200.json
+  operationId: variantLookup
+  summary: Variant Lookup
+  tag: Variants
+  request: GET /variants/{variant_ids}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - variants
+  - errno
+- file: finditparts-shipping-methods-200.json
+  operationId: shippingMethods
+  summary: Shipping Methods
+  tag: Shipping
+  request: GET /shipping_methods
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - shipping_methods
+  - errno
+- file: finditparts-get-reseller-customer-session-200.json
+  operationId: getResellerCustomerSession
+  summary: Get Reseller Customer Session
+  tag: Reseller Customer Sessions
+  request: GET /reseller_customer_sessions/{reseller_customer_session_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - reseller_customer_session
+  - errno
+- file: finditparts-cancel-reseller-customer-session-200.json
+  operationId: cancelResellerCustomerSession
+  summary: Cancels Reseller Customer Session Intent
+  tag: Reseller Customer Sessions
+  request: DELETE /reseller_customer_sessions/{reseller_customer_session_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - reseller_customer_session
+  - errno
+- file: finditparts-create-reseller-customer-session-200.json
+  operationId: createResellerCustomerSession
+  summary: Create Reseller Customer Session
+  tag: Reseller Customer Sessions
+  request: POST /reseller_customer_sessions
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - reseller_customer_session
+  - errno
+- file: finditparts-refresh-session-200.json
+  operationId: refreshSession
+  summary: Refresh Session
+  tag: Sessions
+  request: POST /sessions/refresh
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - jwt
+  - user
+  - errno
+- file: finditparts-get-current-session-200.json
+  operationId: getCurrentSession
+  summary: Get Current Session
+  tag: Sessions
+  request: GET /sessions/current
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - user
+  - errno
+- file: finditparts-create-session-200.json
+  operationId: createSession
+  summary: Create Session
+  tag: Sessions
+  request: POST /sessions
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - jwt
+  - user
+  - errno
+- file: finditparts-destroy-sessions-200.json
+  operationId: destroySessions
+  summary: Destroy Sessions
+  tag: Sessions
+  request: DELETE /sessions
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - message
+- file: finditparts-create-reseller-customer-200.json
+  operationId: createResellerCustomer
+  summary: Create Reseller Customer
+  tag: Reseller Customers
+  request: POST /reseller_customers
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - reseller_customer
+  - errno
+- file: finditparts-list-reseller-customers-200.json
+  operationId: listResellerCustomers
+  summary: List Reseller Customers
+  tag: Reseller Customers
+  request: GET /reseller_customers
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - reseller_customers
+  - pagination
+- file: finditparts-create-user-200.json
+  operationId: createUser
+  summary: Create User
+  tag: Users
+  request: POST /users
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - jwt
+  - user
+  - errno
+- file: finditparts-partners-shipping-methods-200.json
+  operationId: partnersShippingMethods
+  summary: Partners Shipping Methods
+  tag: Partners
+  request: POST /partners/shipping_methods
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - shipping_methods
+  - errno
+- file: finditparts-partners-place-order-200.json
+  operationId: partnersPlaceOrder
+  summary: Partners Place Order
+  tag: Partners
+  request: POST /partners/place_order
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - shipping_methods
+  - errno
+- file: finditparts-search-orders-200.json
+  operationId: searchOrders
+  summary: Search Orders
+  tag: Orders
+  request: GET /orders/search
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - orders
+  - pagination
+- file: finditparts-get-order-200.json
+  operationId: getOrder
+  summary: Order Details
+  tag: Orders
+  request: GET /orders/{order_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - order
+  - errno
+- file: finditparts-list-orders-200.json
+  operationId: listOrders
+  summary: List Orders
+  tag: Orders
+  request: GET /orders
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - orders
+  - pagination
+- file: finditparts-set-default-address-200.json
+  operationId: setDefaultAddress
+  summary: Set Default Address
+  tag: Addresses
+  request: POST /addresses/{address_id}/set_as_default
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - message
+- file: finditparts-update-address-200.json
+  operationId: updateAddress
+  summary: Update Address
+  tag: Addresses
+  request: PUT /addresses/{address_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - addresses
+- file: finditparts-delete-address-200.json
+  operationId: deleteAddress
+  summary: Delete Address
+  tag: Addresses
+  request: DELETE /addresses/{address_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - message
+- file: finditparts-list-addresses-200.json
+  operationId: listAddresses
+  summary: List Addresses
+  tag: Addresses
+  request: GET /addresses
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - addresses
+- file: finditparts-create-address-200.json
+  operationId: createAddress
+  summary: Create Address
+  tag: Addresses
+  request: POST /addresses
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - address
+- file: finditparts-add-cart-line-item-200.json
+  operationId: addCartLineItem
+  summary: Add Product to Cart
+  tag: Carts
+  request: POST /carts/{cart_id}/line_items
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-change-cart-line-items-200.json
+  operationId: changeCartLineItems
+  summary: Change Cart Line Items
+  tag: Carts
+  request: PUT /carts/{cart_id}/line_items
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-get-cart-shipping-methods-200.json
+  operationId: getCartShippingMethods
+  summary: Get Shipping Methods
+  tag: Carts
+  request: GET /carts/{cart_id}/shipping_methods
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - shipping_methods
+  - errno
+- file: finditparts-select-cart-shipping-method-200.json
+  operationId: selectCartShippingMethod
+  summary: Cart Select Shipping Method
+  tag: Carts
+  request: PUT /carts/{cart_id}/shipping_methods
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-set-cart-shipping-address-200.json
+  operationId: setCartShippingAddress
+  summary: Set Shipping Address
+  tag: Carts
+  request: PUT /carts/{cart_id}/shipping_address
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-set-cart-billing-address-200.json
+  operationId: setCartBillingAddress
+  summary: Set Billing Address
+  tag: Carts
+  request: PUT /carts/{cart_id}/billing_address
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-set-cart-coupon-200.json
+  operationId: setCartCoupon
+  summary: Set Cart Coupon
+  tag: Carts
+  request: PUT /carts/{cart_id}/coupon
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-set-cart-po-number-200.json
+  operationId: setCartPoNumber
+  summary: Set Cart PO Number
+  tag: Carts
+  request: PUT /carts/{cart_id}/po_number
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-complete-cart-with-credit-card-200.json
+  operationId: completeCartWithCreditCard
+  summary: Places the Order with a Credit Card
+  tag: Carts
+  request: POST /carts/{cart_id}/complete_with_credit_card
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-complete-cart-with-corporate-billing-200.json
+  operationId: completeCartWithCorporateBilling
+  summary: Places the Order with a Corporate Billing
+  tag: Carts
+  request: POST /carts/{cart_id}/complete_with_corporate_billing
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-get-cart-200.json
+  operationId: getCart
+  summary: Cart Details
+  tag: Carts
+  request: GET /carts/{cart_id}
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart
+- file: finditparts-create-cart-200.json
+  operationId: createCart
+  summary: Create new Cart
+  tag: Carts
+  request: POST /carts
+  status: 200
+  media_type: application/json
+  envelope_keys:
+  - errno
+  - cart

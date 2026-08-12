@@ -1,0 +1,16 @@
+{
+  "errno": "<integer>",
+  "reseller_customers": [
+    {
+      "value": "reference #/components/schemas/ResellerCustomers not found in the OpenAPI spec"
+    },
+    {
+      "value": "reference #/components/schemas/ResellerCustomers not found in the OpenAPI spec"
+    }
+  ],
+  "pagination": {
+    "current_page": "<integer>",
+    "per_page": "<integer>",
+    "total_count": "<integer>"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "jwt": "<string>",
+  "user": {
+    "id": "<string>",
+    "email": "<string>",
+    "firstname": "<string>",
+    "lastname": "<string>",
+    "company": "<string>",
+    "payment_processor_client_token": "<string>",
+    "shipping_address": {
+      "id": "<integer>",
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "country_id": "<integer>",
+      "country_iso": "<string>",
+      "address1": "<string>",
+      "state_id": "<integer>",
+      "state_name": "<string>",
+      "city_name": "<string>",
+      "zipcode": "<string>",
+      "phone": "<string>",
+      "address_type": "residential",
+      "address2": "<string>",
+      "company": "<string>",
+      "is_default": "<boolean>"
+    },
+    "billing_address": {
+      "id": "<integer>",
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "country_id": "<integer>",
+      "country_iso": "<string>",
+      "address1": "<string>",
+      "state_id": "<integer>",
+      "state_name": "<string>",
+      "city_name": "<string>",
+      "zipcode": "<string>",
+      "phone": "<string>",
+      "address_type": "residential",
+      "address2": "<string>",
+      "company": "<string>",
+      "is_default": "<boolean>"
+    }
+  },
+  "errno": "<integer>"
+}

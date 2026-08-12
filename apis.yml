@@ -1,18 +1,77 @@
 aid: finditparts
 name: FinditParts
-description: 'FinditParts is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'FinditParts is a Los Angeles-based online marketplace for heavy-duty
+  truck, trailer, fleet and industrial replacement parts, selling OE, aftermarket and
+  remanufactured components to owner-operators, fleet parts managers and mechanics
+  nationwide. Its developer surface is the FinditParts Reseller API — a partner and
+  reseller integration that lets shop-management platforms, e-commerce sites and fleet
+  applications search the parts catalog with account-specific pricing, look parts up
+  by part number and cross-reference, quote real-time shipping, create and link FinditParts
+  customer accounts through hosted embeddable sessions, build carts and place orders
+  on a linked customer''s behalf, and read back order status and shipments.'
+image: https://d2jocyn8o0ggnq.cloudfront.net/logos/finditparts.png
 url: https://raw.githubusercontent.com/api-evangelist/finditparts/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-12'
 modified: '2026-08-12'
 tags:
 - Company
-apis: []
+- Ecommerce
+- Marketplace
+- Automotive
+- Parts
+- Heavy Duty Trucking
+- Fleet
+- Logistics
+- Commerce
+- Catalog
+- Orders
+- Shipping
+apis:
+- aid: finditparts:finditparts-reseller-api
+  name: FinditParts Reseller API
+  description: 'The FinditParts Reseller API allows you to search parts inventory,
+    create and integrate FinditParts accounts, quote shipping rates for orders, and
+    place orders on behalf of linked FinditParts users. It spans catalog search and
+    part-number lookup, variant price/availability, shipping-method quoting, hosted
+    USER_SETUP and NEW_ORDER customer sessions, cart and checkout, address book, and
+    order history — 38 operations across 31 paths. Authentication is a short-lived
+    HS256 JWT signed with a Reseller Client Secret, or an issued API key for client-side
+    and single-buyer partner applications.'
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Parts
+  - Catalog
+  - Ecommerce
+  - Orders
+  - Shipping
+  - Carts
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-reseller-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: MCPServer
+    url: mcp/finditparts-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: Overlay
+    url: overlays/finditparts-reseller-api-overlay.yaml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +79,67 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.finditparts.com/
+- type: DeveloperPortal
+  url: https://www.finditparts.com/developers
+- type: Documentation
+  url: https://api-docs.finditparts.com/
+- type: APIReference
+  url: https://api-docs.finditparts.com/
+- type: Postman
+  url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+- type: GitHubOrganization
+  url: https://github.com/FinditParts
+- type: Blog
+  url: https://www.finditparts.com/blog
+- type: Support
+  url: https://www.finditparts.com/support
+- type: Contact
+  url: https://www.finditparts.com/contact
+- type: SignUp
+  url: https://www.finditparts.com/signup
+- type: Login
+  url: https://www.finditparts.com/login
+- type: TermsOfService
+  url: https://www.finditparts.com/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.finditparts.com/privacy
+- type: Packages
+  url: packages/finditparts-packages.yml
+- type: LLMsTxt
+  url: llms/finditparts-llms.txt
+- type: Authentication
+  url: authentication/finditparts-authentication.yml
+- type: ErrorCatalog
+  url: errors/finditparts-error-codes.yml
+- type: Conventions
+  url: conventions/finditparts-conventions.yml
+- type: Conformance
+  url: conformance/finditparts-conformance.yml
+- type: Lifecycle
+  url: lifecycle/finditparts-lifecycle.yml
+- type: DomainSecurity
+  url: security/finditparts-domain-security.yml
+- type: DataModel
+  url: data-model/finditparts-data-model.yml
+- type: Components
+  url: components/finditparts-components.yml
+- type: Plans
+  url: plans/finditparts-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/finditparts-rate-limits.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/finditparts-agentic-access.yml
+- type: MCPServer
+  url: mcp/finditparts-mcp.yml
+- type: Examples
+  url: examples/_index.yml
+x-enrichment:
+  date: '2026-08-12'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v1
+x-coverage:
+  state: covered

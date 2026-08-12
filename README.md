@@ -42,5 +42,8 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-FinditParts is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.nasdaqprivatemarket.com/
+FinditParts is a Los Angeles-based online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts, selling OE, aftermarket and remanufactured components to owner-operators, fleet parts managers and mechanics nationwide. Its developer surface is the FinditParts Reseller API — a partner and reseller integration that lets shop-management platforms, e-commerce sites and fleet applications search the parts catalog with account-specific pricing, look parts up by part number and cross-reference, quote real-time shipping, create and link FinditParts customer accounts through hosted embeddable sessions, build carts and place orders on a linked customer's behalf, and read back order status and shipments.
+
+- https://www.finditparts.com/
+- https://www.finditparts.com/developers
+- https://api-docs.finditparts.com/

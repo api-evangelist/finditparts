@@ -1,0 +1,401 @@
+{
+  "products": [
+    {
+      "id": "<integer>",
+      "manufacturer": "<string>",
+      "part_number": "<string>",
+      "short_description": "<string>",
+      "long_description": "<string>",
+      "sellable": "<boolean>",
+      "product_url": "<string>",
+      "product_images": [
+        {
+          "product": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "large": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "small": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "medium": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          }
+        },
+        {
+          "product": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "large": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "small": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "medium": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          }
+        }
+      ],
+      "condition": "<string>",
+      "breadcrumb_ancestors": {
+        "id": "<integer>",
+        "name": "<string>",
+        "permalink": "<string>",
+        "is_hidden": "<boolean>"
+      },
+      "current_variant": {
+        "variant_id": "<integer>",
+        "price": "<string>",
+        "quantity": "<integer>",
+        "pack_quantity": "<integer>",
+        "minimum": "<integer>",
+        "verified": "<boolean>",
+        "location": "<string>",
+        "timezone": "<string>",
+        "cutoff": "<dateTime>",
+        "past_cutoff": "<boolean>",
+        "core_price": "<string>",
+        "estimated_business_days_to_ship": "<integer>",
+        "estimated_ship_date": "<dateTime>",
+        "estimated_days_to_deliver": "<integer>",
+        "estimated_delivery_date_ground": "<dateTime>",
+        "account_price": "<string>",
+        "minimum_order": "<string>",
+        "minimum_order_fee": "<string>"
+      },
+      "preferred_variant_id": "<integer>",
+      "variants": [
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        },
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        }
+      ],
+      "recommendations_url": "<string>",
+      "product_review_count": "<integer>",
+      "product_review_rating": "<float>",
+      "manufacturer_image": "<string>",
+      "msrp": "<float>",
+      "purchase_notes": [
+        {
+          "type": "SPECIAL_ORDER",
+          "html_message": "<string>"
+        },
+        {
+          "type": "RETURNS",
+          "html_message": "<string>"
+        }
+      ],
+      "product_reviews": [
+        {
+          "title": "<string>",
+          "rating": "<integer>",
+          "summary": "<string>"
+        },
+        {
+          "title": "<string>",
+          "rating": "<integer>",
+          "summary": "<string>"
+        }
+      ],
+      "pies_data": {
+        "descriptions": [
+          {
+            "title": "<string>",
+            "description_code": "<string>",
+            "value": "<string>",
+            "language_code": "<string>",
+            "sequence": "<integer>"
+          },
+          {
+            "title": "<string>",
+            "description_code": "<string>",
+            "value": "<string>",
+            "language_code": "<string>",
+            "sequence": "<integer>"
+          }
+        ],
+        "part_interchanges": [
+          {
+            "brand_label": "<string>",
+            "part_number": "<string>",
+            "brand_aaiaid": "<string>"
+          },
+          {
+            "brand_label": "<string>",
+            "part_number": "<string>",
+            "brand_aaiaid": "<string>"
+          }
+        ],
+        "product_attributes": [
+          {
+            "name": "<string>",
+            "value": "<string>"
+          },
+          {
+            "name": "<string>",
+            "value": "<string>"
+          }
+        ],
+        "extended_product_informations": [
+          {
+            "description": "<string>",
+            "value": "<string>",
+            "expi_code": "<string>",
+            "language_code": "<string>"
+          },
+          {
+            "description": "<string>",
+            "value": "<string>",
+            "expi_code": "<string>",
+            "language_code": "<string>"
+          }
+        ]
+      }
+    },
+    {
+      "id": "<integer>",
+      "manufacturer": "<string>",
+      "part_number": "<string>",
+      "short_description": "<string>",
+      "long_description": "<string>",
+      "sellable": "<boolean>",
+      "product_url": "<string>",
+      "product_images": [
+        {
+          "product": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "large": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "small": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "medium": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          }
+        },
+        {
+          "product": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "large": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "small": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          },
+          "medium": {
+            "jpeg": "<string>",
+            "webp": "<string>"
+          }
+        }
+      ],
+      "condition": "<string>",
+      "breadcrumb_ancestors": {
+        "id": "<integer>",
+        "name": "<string>",
+        "permalink": "<string>",
+        "is_hidden": "<boolean>"
+      },
+      "current_variant": {
+        "variant_id": "<integer>",
+        "price": "<string>",
+        "quantity": "<integer>",
+        "pack_quantity": "<integer>",
+        "minimum": "<integer>",
+        "verified": "<boolean>",
+        "location": "<string>",
+        "timezone": "<string>",
+        "cutoff": "<dateTime>",
+        "past_cutoff": "<boolean>",
+        "core_price": "<string>",
+        "estimated_business_days_to_ship": "<integer>",
+        "estimated_ship_date": "<dateTime>",
+        "estimated_days_to_deliver": "<integer>",
+        "estimated_delivery_date_ground": "<dateTime>",
+        "account_price": "<string>",
+        "minimum_order": "<string>",
+        "minimum_order_fee": "<string>"
+      },
+      "preferred_variant_id": "<integer>",
+      "variants": [
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        },
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        }
+      ],
+      "recommendations_url": "<string>",
+      "product_review_count": "<integer>",
+      "product_review_rating": "<float>",
+      "manufacturer_image": "<string>",
+      "msrp": "<float>",
+      "purchase_notes": [
+        {
+          "type": "NA_CA",
+          "html_message": "<string>"
+        },
+        {
+          "type": "SHIPPING_PROMISE",
+          "html_message": "<string>"
+        }
+      ],
+      "product_reviews": [
+        {
+          "title": "<string>",
+          "rating": "<integer>",
+          "summary": "<string>"
+        },
+        {
+          "title": "<string>",
+          "rating": "<integer>",
+          "summary": "<string>"
+        }
+      ],
+      "pies_data": {
+        "descriptions": [
+          {
+            "title": "<string>",
+            "description_code": "<string>",
+            "value": "<string>",
+            "language_code": "<string>",
+            "sequence": "<integer>"
+          },
+          {
+            "title": "<string>",
+            "description_code": "<string>",
+            "value": "<string>",
+            "language_code": "<string>",
+            "sequence": "<integer>"
+          }
+        ],
+        "part_interchanges": [
+          {
+            "brand_label": "<string>",
+            "part_number": "<string>",
+            "brand_aaiaid": "<string>"
+          },
+          {
+            "brand_label": "<string>",
+            "part_number": "<string>",
+            "brand_aaiaid": "<string>"
+          }
+        ],
+        "product_attributes": [
+          {
+            "name": "<string>",
+            "value": "<string>"
+          },
+          {
+            "name": "<string>",
+            "value": "<string>"
+          }
+        ],
+        "extended_product_informations": [
+          {
+            "description": "<string>",
+            "value": "<string>",
+            "expi_code": "<string>",
+            "language_code": "<string>"
+          },
+          {
+            "description": "<string>",
+            "value": "<string>",
+            "expi_code": "<string>",
+            "language_code": "<string>"
+          }
+        ]
+      }
+    }
+  ],
+  "errno": "<integer>"
+}

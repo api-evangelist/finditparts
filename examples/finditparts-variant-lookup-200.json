@@ -1,0 +1,45 @@
+{
+  "variants": [
+    {
+      "variant_id": "<integer>",
+      "price": "<string>",
+      "quantity": "<integer>",
+      "pack_quantity": "<integer>",
+      "minimum": "<integer>",
+      "verified": "<boolean>",
+      "location": "<string>",
+      "timezone": "<string>",
+      "cutoff": "<dateTime>",
+      "past_cutoff": "<boolean>",
+      "core_price": "<string>",
+      "estimated_business_days_to_ship": "<integer>",
+      "estimated_ship_date": "<dateTime>",
+      "estimated_days_to_deliver": "<integer>",
+      "estimated_delivery_date_ground": "<dateTime>",
+      "account_price": "<string>",
+      "minimum_order": "<string>",
+      "minimum_order_fee": "<string>"
+    },
+    {
+      "variant_id": "<integer>",
+      "price": "<string>",
+      "quantity": "<integer>",
+      "pack_quantity": "<integer>",
+      "minimum": "<integer>",
+      "verified": "<boolean>",
+      "location": "<string>",
+      "timezone": "<string>",
+      "cutoff": "<dateTime>",
+      "past_cutoff": "<boolean>",
+      "core_price": "<string>",
+      "estimated_business_days_to_ship": "<integer>",
+      "estimated_ship_date": "<dateTime>",
+      "estimated_days_to_deliver": "<integer>",
+      "estimated_delivery_date_ground": "<dateTime>",
+      "account_price": "<string>",
+      "minimum_order": "<string>",
+      "minimum_order_fee": "<string>"
+    }
+  ],
+  "errno": "<integer>"
+}

@@ -1,0 +1,262 @@
+{
+  "products": [
+    {
+      "finditparts_product_id": "<integer>",
+      "url": "<string>",
+      "manufacturer": "<string>",
+      "part_number": "<string>",
+      "id": "<integer>",
+      "image": "<string>",
+      "image_thumbnail": "<string>",
+      "short_description": "<string>",
+      "preferred_variant_id": "<integer>",
+      "part_number_match_type": "partial",
+      "cross_reference_match_type": "full",
+      "match_score": "<float>",
+      "match_relative_score": "<float>",
+      "sellable": "<boolean>",
+      "variants": [
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        },
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        }
+      ],
+      "tags": [
+        "In Stock",
+        "Express Shipping"
+      ]
+    },
+    {
+      "finditparts_product_id": "<integer>",
+      "url": "<string>",
+      "manufacturer": "<string>",
+      "part_number": "<string>",
+      "id": "<integer>",
+      "image": "<string>",
+      "image_thumbnail": "<string>",
+      "short_description": "<string>",
+      "preferred_variant_id": "<integer>",
+      "part_number_match_type": "none",
+      "cross_reference_match_type": "none",
+      "match_score": "<float>",
+      "match_relative_score": "<float>",
+      "sellable": "<boolean>",
+      "variants": [
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        },
+        {
+          "variant_id": "<integer>",
+          "price": "<string>",
+          "quantity": "<integer>",
+          "pack_quantity": "<integer>",
+          "minimum": "<integer>",
+          "verified": "<boolean>",
+          "location": "<string>",
+          "timezone": "<string>",
+          "cutoff": "<dateTime>",
+          "past_cutoff": "<boolean>",
+          "core_price": "<string>",
+          "estimated_business_days_to_ship": "<integer>",
+          "estimated_ship_date": "<dateTime>",
+          "estimated_days_to_deliver": "<integer>",
+          "estimated_delivery_date_ground": "<dateTime>",
+          "account_price": "<string>",
+          "minimum_order": "<string>",
+          "minimum_order_fee": "<string>"
+        }
+      ],
+      "tags": [
+        "In Stock",
+        "Top Rated"
+      ]
+    }
+  ],
+  "pagination": {
+    "current_page": "<integer>",
+    "per_page": "<integer>",
+    "total_count": "<integer>"
+  },
+  "errno": "<integer>",
+  "aggs": {
+    "price_ranges": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    },
+    "manufacturer": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    },
+    "pies_category": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    },
+    "pies_subcategory": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    },
+    "pies_part_terminology": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    },
+    "tags": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    },
+    "pies_attributes": {
+      "buckets": [
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        },
+        {
+          "key": "<string>",
+          "doc_count": "<number>",
+          "to": "<number>",
+          "from": "<number>"
+        }
+      ],
+      "doc_count_error_upper_bound": "<number>",
+      "sum_other_doc_count": "<number>"
+    }
+  }
+}

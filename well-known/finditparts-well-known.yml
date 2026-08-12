@@ -1,0 +1,65 @@
+generated: '2026-08-12'
+method: probed
+source: live GET of each /.well-known/ path on every FinditParts host
+note: >-
+  RECORDED ABSENCE. Every well-known discovery path was probed on both the website host
+  and the API host (they are the same origin — the Reseller API is served from
+  finditparts.com/api/v1, not a separate api. subdomain) and every one returned 404.
+  No WellKnown and no SecurityTxt pointer is emitted in apis.yml, because there is no
+  document at any of these paths for such a pointer to point at. This file exists to
+  record that the probe ran and what it found.
+hosts:
+- https://www.finditparts.com
+- https://finditparts.com
+- https://api-docs.finditparts.com
+documents:
+- path: /.well-known/security.txt
+  status: 404
+  spec: RFC 9116
+  file: null
+- path: /.well-known/openid-configuration
+  status: 404
+  spec: OpenID Connect Discovery 1.0
+  file: null
+  note: 404 body is the site's HTML 404 page, not a document.
+- path: /.well-known/oauth-authorization-server
+  status: 404
+  spec: RFC 8414
+  file: null
+  note: Consistent with the auth model — FinditParts uses signed JWTs and API keys, not OAuth 2.0.
+- path: /.well-known/oauth-protected-resource
+  status: 404
+  spec: RFC 9728
+  file: null
+- path: /.well-known/api-catalog
+  status: 404
+  spec: RFC 9727
+  file: null
+- path: /.well-known/ai-plugin.json
+  status: 404
+  file: null
+- path: /.well-known/agent-card.json
+  status: 404
+  spec: A2A 1.0.0
+  file: null
+- path: /.well-known/agent.json
+  status: 404
+  spec: A2A pre-0.3 legacy
+  file: null
+adjacent_discovery_found:
+- path: /llms.txt
+  status: 200
+  content_type: text/plain
+  file: llms/finditparts-llms.txt
+  note: >-
+    Not a /.well-known/ path, but a real, substantive, first-party machine-addressed
+    discovery document. Captured verbatim and pointed at with type LLMsTxt.
+- path: /llms.json
+  status: 200
+  content_type: application/json
+  file: llms/finditparts-llms.json
+  note: FinditParts' own machine-readable companion to llms.txt, referenced from llms.txt.
+- path: /robots.txt
+  status: 200
+- path: /sitemap.xml
+  status: 200

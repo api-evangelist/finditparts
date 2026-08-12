@@ -1,0 +1,7 @@
+{
+  "reseller_customer": {
+    "customer_reference": "<string>",
+    "user_id": "<number>"
+  },
+  "errno": "<integer>"
+}

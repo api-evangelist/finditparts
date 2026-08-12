@@ -1,0 +1,279 @@
+generated: '2026-08-12'
+method: derived
+source: openapi/finditparts-reseller-api-openapi.yml
+also_derived_from: examples/_index.yml
+docs: https://api-docs.finditparts.com/
+note: >-
+  Entity-relationship graph of the FinditParts Reseller API, derived from the response
+  schemas and id-reference fields of all 38 operations. FinditParts publishes no object
+  reference and no components/schemas — the collection's example payloads inline every
+  object rather than $ref-ing it, so the entities below were recovered by matching
+  repeated field shapes across payloads. Field lists are the real keys observed in the
+  provider's own examples.
+identifiers:
+  scheme: opaque integers and strings
+  prefixed_ids: false
+  note: >-
+    No Stripe-style prefixed ids. Ids are bare integers (product id, variant_id,
+    address id, cart id, shipping method id) or opaque strings (order number,
+    reseller_customer_session_id, user id). An agent cannot tell what an id refers to
+    from the id alone — the field name is the only type signal.
+tenancy_key:
+  field: customer_reference
+  description: >-
+    The reseller's own handle for its end customer, carried as the JWT sub claim. It is
+    the join key for the entire reseller surface: it links a ResellerCustomer to a User,
+    scopes ResellerCustomerSession, and is stamped onto Order.
+entities:
+- name: Product
+  description: A catalog part, keyed by manufacturer plus part number.
+  primary_key: id
+  aliases:
+  - finditparts_product_id (the same product id, named differently in search results,
+    cart line items and NEW_ORDER session payloads)
+  returned_by: [getProduct, getProductsMulti, lookupProductByPartNumber, productSearch]
+  fields: [id, manufacturer, part_number, short_description, long_description, sellable,
+    product_url, condition, preferred_variant_id, recommendations_url, product_review_count,
+    product_review_rating, manufacturer_image, msrp, url, image, image_thumbnail,
+    part_number_match_type, cross_reference_match_type, match_score, match_relative_score, tags]
+- name: Variant
+  description: >-
+    A purchasable SKU of a Product — the level at which price, stock, ship cutoff and
+    core charge live. This is the unit the cart and order actually reference.
+  primary_key: variant_id
+  returned_by: [variantLookup, getProduct, productSearch]
+  fields: [variant_id, price, account_price, quantity, pack_quantity, minimum, verified,
+    location, timezone, cutoff, past_cutoff, core_price, estimated_business_days_to_ship,
+    estimated_ship_date, estimated_days_to_deliver, estimated_delivery_date_ground,
+    minimum_order, minimum_order_fee]
+  note: >-
+    price is list price and account_price is the customer-specific price. account_price
+    only populates when the request JWT carries a sub Customer Reference — the same
+    operation returns a different price depending on the credential.
+- name: PiesData
+  description: >-
+    Auto Care Association PIES (Product Information Exchange Standard) data attached to
+    a Product, returned only when getProduct is called with include_pies_data.
+  parent: Product
+  fields: [descriptions, part_interchanges, product_attributes, extended_product_informations]
+- name: ProductImage
+  description: An image rendition set on a Product or cart/order line item.
+  parent: Product
+  fields: [product, large, medium, small]
+  renditions: [jpeg, webp]
+- name: ProductReview
+  description: A customer review attached to a Product.
+  parent: Product
+- name: User
+  description: A FinditParts shopper account. Created directly by createUser, or created
+    or linked by the end customer inside a USER_SETUP session.
+  primary_key: id
+  returned_by: [createUser, createSession, refreshSession, getCurrentSession]
+  fields: [id, email, firstname, lastname, company, payment_processor_client_token]
+- name: ResellerCustomer
+  description: A sub-user on a reseller master account, addressed by customer_reference.
+  primary_key: customer_reference
+  returned_by: [createResellerCustomer, listResellerCustomers]
+  fields: [customer_reference, user_id]
+- name: ResellerCustomerSession
+  description: >-
+    A hosted USER_SETUP or NEW_ORDER session rendered on finditparts.com and embedded
+    by the reseller. Carries the resulting Order once a NEW_ORDER session completes.
+  primary_key: id
+  returned_by: [createResellerCustomerSession, getResellerCustomerSession, cancelResellerCustomerSession]
+  fields: [id, intent, redirect_url, resolution, expires_at, customer_reference]
+  enums:
+    intent: [user_setup, new_order]
+    resolution: [pending, SUCCESS, FAILED, FAILURE, CANCELLED]
+- name: Address
+  description: A shipping or billing address in a user's address book.
+  primary_key: id
+  returned_by: [listAddresses, createAddress, updateAddress]
+  fields: [id, first_name, last_name, company, address1, address2, city_name, state_id,
+    state_name, zipcode, country_id, country_iso, phone, address_type, is_default]
+  enums:
+    address_type: [commercial, residential]
+- name: Cart
+  description: A draft order. Becomes an Order on checkout.
+  primary_key: id
+  returned_by: [createCart, getCart, addCartLineItem, changeCartLineItems, selectCartShippingMethod,
+    setCartShippingAddress, setCartBillingAddress, setCartCoupon, setCartPoNumber,
+    completeCartWithCreditCard, completeCartWithCorporateBilling]
+  fields: [id, number, state, total, item_total, shipping_method_name, shipping_method_id,
+    po_number, cart_token, corporate_billing_available]
+- name: LineItem
+  description: A quantity of a Variant on a Cart or Order.
+  primary_key: id
+  parent: [Cart, Order]
+  fields: [id, quantity, amount, manufacturer, part_number, pack_qty, variant_id, product_id]
+- name: Adjustment
+  description: A price adjustment (coupon, fee, core charge) on a Cart or Order.
+  parent: [Cart, Order]
+- name: Order
+  description: A placed order.
+  primary_key: number
+  returned_by: [listOrders, searchOrders, getOrder, getResellerCustomerSession]
+  fields: [number, state, total, items_total, po_number, customer_reference, user_id,
+    shipping_method_name, shipping_method_id, shipping_carrier_type, completed_at, url]
+  enums:
+    state: [pending, processing, delivered, returned]
+- name: Shipment
+  description: A physical shipment against a Cart or Order.
+  parent: [Cart, Order]
+- name: Payment
+  description: A payment record against an Order.
+  parent: Order
+- name: ShippingMethod
+  description: A quoted carrier service with cost and delivery estimate for a set of line items.
+  primary_key: id
+  returned_by: [shippingMethods, getCartShippingMethods, partnersShippingMethods]
+  fields: [id, label, amount, identifier, currency, carrier_type, detail, days_to_deliver,
+    estimated_delivery_date, available, url, manufacturer]
+  enums:
+    carrier_type: [ups]
+  note: >-
+    ups is the only carrier_type value FinditParts shows in its examples; the field is
+    open-ended and other carriers are not enumerated in the published contract.
+relationships:
+- from: Product
+  to: Variant
+  kind: has_many
+  via: variants
+- from: Product
+  to: Variant
+  kind: has_one
+  via: preferred_variant_id
+  note: The default purchasable variant.
+- from: Product
+  to: Variant
+  kind: has_one
+  via: current_variant
+- from: Product
+  to: ProductImage
+  kind: has_many
+  via: product_images
+- from: Product
+  to: PiesData
+  kind: has_one
+  via: pies_data
+- from: Product
+  to: ProductReview
+  kind: has_many
+  via: product_reviews
+- from: ResellerCustomer
+  to: User
+  kind: belongs_to
+  via: user_id
+- from: ResellerCustomerSession
+  to: ResellerCustomer
+  kind: belongs_to
+  via: customer_reference
+- from: ResellerCustomerSession
+  to: Order
+  kind: has_one
+  via: order
+  note: Populated only for a completed NEW_ORDER session.
+- from: User
+  to: Address
+  kind: has_one
+  via: shipping_address
+- from: User
+  to: Address
+  kind: has_one
+  via: billing_address
+- from: User
+  to: Address
+  kind: has_many
+  via: listAddresses
+- from: Cart
+  to: LineItem
+  kind: has_many
+  via: line_items
+- from: Cart
+  to: Adjustment
+  kind: has_many
+  via: adjustments
+- from: Cart
+  to: Address
+  kind: has_one
+  via: shipping_address
+- from: Cart
+  to: Address
+  kind: has_one
+  via: billing_address
+- from: Cart
+  to: ShippingMethod
+  kind: has_one
+  via: shipping_method_id
+- from: Cart
+  to: Shipment
+  kind: has_many
+  via: shipments
+- from: LineItem
+  to: Variant
+  kind: belongs_to
+  via: variant_id
+- from: LineItem
+  to: Product
+  kind: belongs_to
+  via: product_id
+- from: LineItem
+  to: ProductImage
+  kind: has_many
+  via: product_images
+- from: Order
+  to: LineItem
+  kind: has_many
+  via: line_items
+- from: Order
+  to: Adjustment
+  kind: has_many
+  via: adjustments
+- from: Order
+  to: Shipment
+  kind: has_many
+  via: shipments
+- from: Order
+  to: Payment
+  kind: has_many
+  via: payments
+- from: Order
+  to: Address
+  kind: has_one
+  via: shipping_address
+- from: Order
+  to: Address
+  kind: has_one
+  via: billing_address
+- from: Order
+  to: User
+  kind: belongs_to
+  via: user_id
+- from: Order
+  to: ResellerCustomer
+  kind: belongs_to
+  via: customer_reference
+- from: Order
+  to: ShippingMethod
+  kind: has_one
+  via: shipping_method_id
+lifecycle_flow:
+  reseller_hosted: >-
+    createResellerCustomer -> createResellerCustomerSession(USER_SETUP) -> customer
+    completes hosted page -> createResellerCustomerSession(NEW_ORDER) -> customer
+    confirms -> getResellerCustomerSession returns the Order.
+  direct_api: >-
+    createSession (or createUser) -> productSearch / variantLookup -> createCart ->
+    addCartLineItem -> setCartShippingAddress -> getCartShippingMethods ->
+    selectCartShippingMethod -> completeCartWithCreditCard -> getOrder.
+observations:
+- >-
+  partnersPlaceOrder documents a 200 example whose envelope key is shipping_methods,
+  not an order or cart. That is almost certainly an error in the provider's published
+  collection — the operation is named and described as placing an order. Recorded, not
+  corrected; the derived OpenAPI carries the payload as published.
+- >-
+  Product identity is inconsistent across the surface: the same value appears as id
+  (getProduct), finditparts_product_id (productSearch, cart line items, NEW_ORDER
+  payloads) and product_id (cart line items). An agent must normalize these.
+render: null

@@ -1,0 +1,85 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+derived_from: openapi/finditparts-reseller-api-openapi.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://finditparts.com/api/v1
+  document_version: 2.0.1
+  docs: https://api-docs.finditparts.com/
+  note: >-
+    The URI version is v1; the contract document FinditParts publishes is titled
+    "FinditParts Reseller API 2.0.1". Backend evolution inside v1 is exposed as an
+    opt-in query flag rather than a new path version — productSearch accepts
+    use_v3_search=true to select the v3 search backend over v2, which means two
+    search implementations are live behind one versioned path.
+  policy_url: null
+  policy_published: false
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  evidence: >-
+    No deprecation or sunset policy is published on the developer page or in the API
+    documentation, and no operation in the collection is marked deprecated. No
+    Deprecation pointer is emitted in apis.yml.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  url: null
+  published: false
+  probes:
+  - url: https://status.finditparts.com/
+    status: 000
+    note: host does not resolve
+  - url: https://www.finditparts.com/status
+    status: 200
+    note: >-
+      Returns the two-byte body "OK". This is a load-balancer health check, not a
+      status page — it carries no incident history, no component list and no uptime
+      record. It is NOT counted as a status page and no StatusPage pointer is emitted.
+changelog:
+  url: null
+  published: false
+  evidence: >-
+    No dated changelog, release-notes page or version-history section exists on the
+    developer page, the Postman documentation, or the site. The only version signal
+    is the 2.0.1 stamped on the collection title. No changelog/ artifact and no
+    ChangeLog pointer are emitted.
+support:
+  url: https://www.finditparts.com/support
+  contact: https://www.finditparts.com/contact
+  email: support@finditparts.com
+  phone:
+  - (888) 312-8812
+  - +1 (213) 986-2140
+access_model:
+  self_service: false
+  note: >-
+    Credentials (Reseller Client ID, Reseller Client Secret, API key) are issued by
+    FinditParts to approved reseller and partner clients. There is no self-service key
+    generation, no developer signup and no published application form — the developer
+    page routes to general support/contact. The documentation itself is fully public.
+sandbox:
+  published: false
+  url: null
+  evidence: >-
+    No sandbox host, test-mode key prefix, test card, magic identifier or fixture tool
+    is published, and the single server FinditParts names is the production
+    https://finditparts.com/api/v1. No sandbox/ artifact and no Sandbox pointer are
+    emitted. OBSERVATION ONLY, not a provider claim: every JWT example in the
+    documentation signs with iss "acme-corp-sandbox", which suggests FinditParts issues
+    sandbox-suffixed Reseller Client IDs to onboarding partners. That is an inference
+    from an example string, so it is recorded here rather than asserted as a sandbox.
+gaps:
+- No deprecation or sunset policy.
+- No SLA or uptime commitment.
+- No status page.
+- No changelog or release notes.
+- No published API version-support window.

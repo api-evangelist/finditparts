@@ -1,0 +1,155 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+docs: https://api-docs.finditparts.com/
+derived_from: openapi/finditparts-reseller-api-openapi.yml
+note: >-
+  Cross-cutting request/response semantics of the FinditParts Reseller API, read from
+  the provider's own published documentation and cross-checked against every operation
+  in the derived OpenAPI. Absences below are recorded absences, not unchecked fields.
+authentication:
+  style: bearer-token
+  header: Authorization
+  credentials:
+  - short-lived HS256 JWT signed with the Reseller Client Secret (per request)
+  - issued API key of the form api-XYZ123
+  - user-specific session JWT (1 month default) obtained via createSession/refreshSession
+  detail: authentication/finditparts-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    No Idempotency-Key header, no idempotency parameter and no request-id de-duplication
+    appears on any of the 38 operations in the collection, and the provider's
+    documentation overview does not mention idempotency, replay or retry safety. The
+    only replay control documented is the JWT exp claim, which FinditParts frames as an
+    anti-replay measure for AUTHENTICATION, not as request de-duplication.
+  consequence: >-
+    Order-placing operations (completeCartWithCreditCard, completeCartWithCorporateBilling,
+    partnersPlaceOrder, and a NEW_ORDER reseller customer session) carry no
+    de-duplication contract, so a client that retries after a timeout can create a
+    duplicate order. Agents must treat these as at-most-once and reconcile via
+    searchOrders / getOrder rather than retrying.
+pagination:
+  style: page-number
+  supported_on:
+  - productSearch
+  - listOrders
+  - searchOrders
+  - listResellerCustomers
+  request_params:
+  - name: page
+    description: Page number.
+    operations: [productSearch, listOrders, searchOrders, listResellerCustomers]
+  - name: per
+    description: Page size. Documented on productSearch only.
+    operations: [productSearch]
+  response_object:
+    field: pagination
+    fields:
+    - current_page
+    - per_page
+    - total_count
+    present_on:
+    - productSearch
+    - listOrders
+    - searchOrders
+    - listResellerCustomers
+    evidence: 200 example payloads in the published collection
+  cursor: false
+  link_header: false
+  gaps:
+  - >-
+    per (page size) is documented only on productSearch, so the other three paginated
+    operations expose page_size in the response but offer no way to set it.
+  - No documented default or maximum page size.
+  - No total_pages; a client must divide total_count by per_page itself.
+filtering_and_sorting:
+  search_params:
+    productSearch:
+      required_one_of: [part_number, query]
+      facets: [m (manufacturer), pc, psc, ppt, c_d1, c_d2, c_d3, attrs, tags]
+      price_range: [pf, pt]
+      flags: [strict, ioos, aggs, x_core, use_v3_search]
+      ids: ids (repeatable)
+      note: use_v3_search=true toggles between the v2 and v3 search backends.
+    searchOrders:
+      params: [q, start_date, end_date, sort_field, sort_direction, page]
+      sort_directions: [asc, desc]
+field_expansion:
+  supported: partial
+  mechanism: per-operation boolean query flags rather than a general expand grammar
+  examples:
+  - param: include_pies_data
+    operation: getProduct
+    description: Include PIES (Product Information Exchange Standard) product data.
+  - param: aggs
+    operation: productSearch
+    description: Return search aggregations.
+  sparse_fieldsets: false
+metadata:
+  customer_reference:
+    description: >-
+      The reseller's own opaque handle for its customer (a user id or email), carried as
+      the JWT sub and linked to a FinditParts account by a USER_SETUP session. This is
+      the primary tenancy key of the whole reseller surface.
+    appears_on: [createResellerCustomerSession, createResellerCustomer, partnersPlaceOrder, order objects]
+  po_number:
+    description: Purchase-order number attachable to a cart/order.
+    operations: [setCartPoNumber, partnersPlaceOrder]
+request_tracing:
+  request_id_header: null
+  correlation_id: null
+  evidence: >-
+    No request-id, correlation-id or trace header is documented or present on any
+    operation in the collection. There is no client-visible handle to quote to support
+    for a failed call.
+versioning:
+  scheme: uri-path
+  current: v1
+  base_url: https://finditparts.com/api/v1
+  document_version: 2.0.1 (the version FinditParts stamps on the published collection)
+  note: >-
+    The URI path is v1 while the published contract is titled 2.0.1 — the document
+    version and the path version are on separate tracks. In-path minor toggling is done
+    per-operation instead (productSearch use_v3_search=true selects the v3 search backend).
+  header_versioning: false
+  date_versioning: false
+error_envelope:
+  format: proprietary
+  shape: {errno: integer, message: string}
+  rfc9457: false
+  detail: errors/finditparts-error-codes.yml
+  critical: >-
+    errno rides on 200 responses too. Status-code-only success checking is unsafe on
+    this API.
+rate_limiting:
+  published: false
+  response_headers: []
+  detail: rate-limits/finditparts-rate-limits.yml
+content_negotiation:
+  request: application/json (Content-Type on every operation carrying a body)
+  response: application/json
+  accept_header: 'Accept: application/json is set on every operation in the collection'
+  format_suffix: >-
+    The shipping-methods API-key examples use a .json suffix
+    (GET /api/v1/shipping_methods.json?...), so a Rails-style format suffix is accepted
+    alongside the Accept header.
+  bracket_array_encoding: >-
+    Collection-typed query parameters use Rails bracket encoding, e.g.
+    line_items[][variant_id]=123&line_items[][quantity]=1&address[zipcode]=93101
+webhooks:
+  supported: false
+  evidence: >-
+    No webhook registration, event catalog or callback surface appears in the
+    documentation or the collection. The only asynchronous notification FinditParts
+    documents is a browser postMessage event emitted by the embedded session iframe —
+    a client-side UI event, not a server-to-server webhook. See
+    components/finditparts-components.yml.
+cross_links:
+  authentication: authentication/finditparts-authentication.yml
+  errors: errors/finditparts-error-codes.yml
+  lifecycle: lifecycle/finditparts-lifecycle.yml
+  rate_limits: rate-limits/finditparts-rate-limits.yml
+  components: components/finditparts-components.yml
+  data_model: data-model/finditparts-data-model.yml

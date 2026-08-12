@@ -1,0 +1,36 @@
+generated: '2026-08-12'
+method: searched
+source: https://www.finditparts.com/developers
+plan_count: 0
+pricing_url: null
+note: >-
+  RECORDED ZERO. FinditParts publishes no API pricing, no plan tiers, no free tier and
+  no usage-based rate card. https://www.finditparts.com/pricing returns 404, and the
+  developer page carries no commercial terms — only the capability summary, the API
+  documentation link and general support contacts.
+access_model:
+  self_service_signup: false
+  free_tier: null
+  trial: null
+  how_to_get_access: >-
+    Reseller Client ID, Reseller Client Secret and an API key are issued by FinditParts
+    to approved reseller and partner clients. The documentation states "Custom Postman
+    API collections are available for specific use cases and can be provided upon
+    request", which confirms onboarding is a human, relationship-driven process. The
+    route in is the general contact/support channel.
+  contact: https://www.finditparts.com/contact
+plans: []
+commercial_model:
+  inferred: transactional
+  note: >-
+    DERIVED, not published. The API is a reseller/dropship channel — the revenue event
+    is the parts order placed through it (partnersPlaceOrder, completeCartWithCreditCard,
+    completeCartWithCorporateBilling), not an API subscription. That is consistent with
+    the absence of any published API price, but FinditParts states no commercial terms
+    publicly, so nothing here is a provider claim.
+probes:
+- url: https://www.finditparts.com/pricing
+  status: 404
+- url: https://www.finditparts.com/developers
+  status: 200
+  note: No pricing content.

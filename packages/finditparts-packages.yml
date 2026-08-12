@@ -1,0 +1,65 @@
+generated: '2026-08-12'
+method: searched
+source: npm, PyPI, RubyGems, Packagist, crates.io, NuGet, GitHub org, and the FinditParts developer page
+package_count: 0
+official_sdk_count: 0
+note: >-
+  RECORDED ABSENCE. FinditParts publishes no first-party client library in any public
+  package registry. No Packages/SDKs pointer for an SDK is emitted in apis.yml beyond
+  this file itself, and no type SDKs pointer is emitted, because there is no official
+  SDK to count. The only client artifact FinditParts ships is the public Postman
+  collection (postman/finditparts-reseller-api-postman.json), which is a request
+  collection, not a library.
+packages: []
+registries_searched:
+- registry: npm
+  query: finditparts
+  endpoint: https://registry.npmjs.org/-/v1/search?text=finditparts
+  results: 0
+  version: null
+- registry: pypi
+  query: finditparts
+  endpoint: https://pypi.org/pypi/finditparts/json
+  status: 404
+  results: 0
+  version: null
+- registry: rubygems
+  query: finditparts
+  endpoint: https://rubygems.org/api/v1/search.json?query=finditparts
+  results: 0
+  version: null
+- registry: packagist
+  query: finditparts
+  endpoint: https://packagist.org/search.json?q=finditparts
+  results: 0
+  version: null
+- registry: crates.io
+  query: finditparts
+  endpoint: https://crates.io/api/v1/crates?q=finditparts
+  results: 0
+  version: null
+- registry: nuget
+  query: finditparts
+  endpoint: https://api.nuget.org/v3/registration5-semver1/finditparts/index.json
+  status: 404
+  results: 0
+  version: null
+- registry: maven-central
+  query: finditparts
+  results: 0
+  version: null
+- registry: pkg.go.dev
+  query: finditparts
+  results: 0
+  version: null
+github_org:
+  url: https://github.com/FinditParts
+  status: 200
+  first_party_sdks: 0
+  note: >-
+    The org is real and public but publishes no FinditParts client library. Its public
+    repositories are forks of third-party projects the company consumes internally —
+    heroku-imagemagick-buildpack, functions-framework-ruby, AvaTax-REST-V2-Ruby-SDK,
+    AvaTax-Calc-REST-Ruby, active_shipping, preferences, cordova-plugin-inappbrowser.
+    These are other vendors' code, not FinditParts SDKs, and none is marked official here.
+  version: null

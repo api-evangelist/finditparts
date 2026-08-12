@@ -1,0 +1,94 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the FinditParts Reseller API
+  version: 1.0.0
+extends: openapi/finditparts-reseller-api-openapi.yml
+x-generated: '2026-08-12'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pipeline. Captures the annotations API Evangelist adds on
+  top of the contract derived from the first-party FinditParts Postman collection. The
+  derived OpenAPI is never mutated in place; this overlay is the record of what we
+  added and why.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/finditparts/
+    x-apievangelist-contract-provenance: >-
+      Derived from the first-party public Postman collection "FinditParts Reseller API
+      2.0.1" at https://api-docs.finditparts.com/, saved verbatim at
+      postman/finditparts-reseller-api-postman.json. FinditParts publishes no OpenAPI.
+    x-apievangelist-artifacts:
+      authentication: authentication/finditparts-authentication.yml
+      errors: errors/finditparts-error-codes.yml
+      conventions: conventions/finditparts-conventions.yml
+      data-model: data-model/finditparts-data-model.yml
+      lifecycle: lifecycle/finditparts-lifecycle.yml
+      components: components/finditparts-components.yml
+      rate-limits: rate-limits/finditparts-rate-limits.yml
+      plans: plans/finditparts-plans-pricing.yml
+      skills: skills/_index.yml
+      mcp: mcp/finditparts-mcp.yml
+      agentic-access: agentic-access/finditparts-agentic-access.yml
+- target: $.info
+  update:
+    x-apievangelist-gaps:
+    - No OpenAPI published by the provider.
+    - No idempotency key on any write, including the four order-placing operations.
+    - No RFC 9457 problem details; a proprietary {errno, message} envelope that also
+      rides on 200 responses.
+    - No published rate limits and no rate-limit response headers.
+    - No status page, no changelog, no deprecation policy, no SLA.
+    - No /.well-known/ surface at all; security.txt absent.
+    - No first-party SDK in any package registry.
+    - No published compliance program despite the API accepting card payment nonces.
+- target: $.info
+  update:
+    x-apievangelist-strengths:
+    - A complete, hand-authored llms.txt plus a machine-readable llms.json companion —
+      rarer and better than most of the catalog.
+    - A fully public, richly described API reference with worked JWT payloads per flow.
+    - Every operation ships a real example response payload.
+    - PIES (Auto Care Association) product data exposed through the API.
+    - HSTS with a two-year max-age, SPF, and DMARC at policy reject.
+- target: $.servers[0]
+  update:
+    x-apievangelist-note: >-
+      Sole host. FinditParts publishes no sandbox host; the JWT examples sign with an
+      iss of "acme-corp-sandbox", which suggests sandbox reseller client IDs exist, but
+      the provider documents no test environment.
+- target: $.components.securitySchemes.resellerJWT
+  update:
+    x-apievangelist-note: >-
+      Per-request signing. The JWT is the request envelope, not just a credential — the
+      sub claim selects the customer and the data.intent claim selects the operation
+      mode, so the same endpoint returns different pricing for different tokens.
+- target: $.components.schemas.ApiError
+  update:
+    x-apievangelist-note: >-
+      This envelope is returned on 200 as well as on errors. Treat errno != 0 as a
+      failure regardless of HTTP status.
+- target: $.paths['/carts/{cart_id}/complete_with_credit_card'].post
+  update:
+    x-apievangelist-risk: >-
+      Irreversible commercial write with no idempotency contract. A retry after a
+      network timeout may duplicate the order; reconcile with searchOrders instead of
+      retrying.
+- target: $.paths['/carts/{cart_id}/complete_with_corporate_billing'].post
+  update:
+    x-apievangelist-risk: >-
+      Irreversible commercial write with no idempotency contract. Reconcile rather than retry.
+- target: $.paths['/partners/place_order'].post
+  update:
+    x-apievangelist-risk: >-
+      Irreversible commercial write with no idempotency contract.
+    x-apievangelist-contract-defect: >-
+      The provider's own published 200 example for this operation returns a
+      shipping_methods envelope rather than an order or cart. Carried through as
+      published; likely an error in the FinditParts documentation.
+- target: $.paths['/products'].get
+  update:
+    x-apievangelist-note: >-
+      Returns list price when the JWT carries no sub, and account_price when it carries
+      a Customer Reference sub with data.intent PRODUCT_SEARCH. The response shape does
+      not announce which pricing basis was applied.

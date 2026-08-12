@@ -1,0 +1,119 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+docs: https://api-docs.finditparts.com/
+note: >-
+  FinditParts ships no JavaScript element library and no web components. What it does
+  ship — and documents in detail — is a HOSTED, EMBEDDABLE CHECKOUT SURFACE: the
+  Reseller Customer Session. The API returns a finditparts.com URL that the reseller
+  drops into an iframe (or redirects to), FinditParts renders account setup or order
+  confirmation inside it, and the result comes back either as browser postMessage
+  events or as query parameters on a redirect. That is a prebuilt hosted UI component
+  in the same sense as a hosted payment page, so it is captured here rather than in
+  packages/. Nothing below is invented; every field, event and payload is transcribed
+  from the createResellerCustomerSession documentation.
+component_count: 1
+families:
+- family: Reseller Customer Session
+  kind: hosted-embeddable-page
+  delivery:
+  - iframe
+  - full-page redirect
+  loader_library: none — no script tag, no SDK; the reseller embeds a returned URL
+  created_by: createResellerCustomerSession
+  inspected_by: getResellerCustomerSession
+  cancelled_by: cancelResellerCustomerSession
+  url_field: reseller_customer_session.redirect_url
+  authorization: >-
+    The session is created with a JWT carrying sub (Customer Reference), iss, exp and a
+    data payload whose intent selects which surface renders. The rendered page is
+    session-scoped; no reseller credential is exposed in the browser.
+  components:
+  - name: USER_SETUP
+    intent: USER_SETUP
+    purpose: >-
+      Prompts the end customer to create a FinditParts account with payment details
+      and shipping address, or to sign in to an existing FinditParts account, and links
+      that account to the reseller's Customer Reference.
+    prerequisite: none — this is the first session for any Customer Reference
+    rerunnable: true
+    rerun_purpose: Re-run on an already-linked Customer Reference to modify payment details or shipping addresses.
+    prefill:
+      supported: true
+      fields:
+      - user.firstname
+      - user.lastname
+      - user.email
+      - user.company
+      - user.address.address1
+      - user.address.address2
+      - user.address.city
+      - user.address.state
+      - user.address.zipcode
+      - user.address.phone
+      - user.address.country
+      note: Passed in the JWT data payload; optional, prefills the form only.
+  - name: NEW_ORDER
+    intent: NEW_ORDER
+    purpose: >-
+      Presents the end customer with an order summary including final cost and
+      confirmation of payment and shipping details, and places the order on completion.
+    prerequisite: >-
+      A USER_SETUP session must have been completed for that Customer Reference first.
+    inputs:
+      line_items: >-
+        Each item addressed by finditparts_product_id, by a specific variant_id from
+        product search, or by part_number plus manufacturer — each with quantity.
+      default_shipping_address: >-
+        Must already exist on the account; matched by numerical address and zipcode.
+      default_shipping_method: >-
+        A shipping method identifier obtained from the shippingMethods call for the
+        same set of line_items.
+  completion_handling:
+  - mode: redirect
+    condition: data.redirect_url is supplied in the session JWT
+    transport: query parameters appended to the reseller's redirect_url
+    success: resolution=SUCCESS&customer_reference=XXX&reseller_customer_session_id=XXX
+    failure_user_setup: resolution=FAILED&reason=XXX&customer_reference=XXX&reseller_customer_session_id=XXX
+    failure_new_order: resolution=FAILURE/CANCELLED&customer_reference=XXX&reseller_customer_session_id=XXX
+  - mode: postMessage
+    condition: no data.redirect_url is supplied (the iframe implementation)
+    transport: window.postMessage to the parent frame
+    events:
+    - event: loaded
+      payload:
+        pageLoaded: true
+      description: Emitted when the iframe has loaded.
+    - event: completed-success
+      payload:
+        error: false
+        intent: String
+        resolution: String
+        reseller_customer_session_id: String
+        customer_reference: String
+      description: Emitted when the user has completed a USER_SETUP or NEW_ORDER session.
+    - event: completed-error
+      payload:
+        error: true
+        message: String
+  security_notes:
+  - >-
+    The documented postMessage payloads carry no target origin guidance. A reseller
+    embedding this must validate event.origin against the FinditParts origin itself.
+  - >-
+    resolution and customer_reference arrive from the browser in both modes. They are
+    client-supplied on the redirect path and must be confirmed server-side via
+    getResellerCustomerSession before an order is treated as placed.
+payment_surface:
+  note: >-
+    completeCartWithCreditCard accepts payment_method_nonce and device_data — the
+    field shape of a Braintree client-side tokenization handoff, which implies a
+    client-side payment component collects the card and the API never sees a PAN.
+    FinditParts does not name the processor or publish a tokenization library in its
+    public documentation, so the processor is NOT asserted here. The
+    user.payment_processor_client_token field returned by createSession, createUser,
+    refreshSession and getCurrentSession is the client token such a component would consume.
+  documented_by_provider: partial
+web_components: []
+javascript_libraries: []
+embedded_dashboards: []

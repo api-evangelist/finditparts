@@ -1,0 +1,47 @@
+# FinditParts
+
+> FinditParts is an online marketplace for heavy-duty truck, trailer, fleet, and industrial replacement parts. Product detail pages are the primary public content for part numbers, fitment, specifications, pricing, and availability.
+
+This file is guidance for AI assistants and LLM crawlers. It does not override robots.txt, page-level robots directives, canonical tags, terms of use, or access controls.
+
+## Discovery
+
+- [Sitemap](https://www.finditparts.com/sitemap.xml): XML sitemap of indexable product, category, manufacturer, and content URLs.
+- [Robots](https://www.finditparts.com/robots.txt): Crawl rules for FinditParts.com.
+- [LLM guidance (JSON)](https://www.finditparts.com/llms.json): Machine-readable companion to this file.
+
+## Product pages
+
+Product detail pages (PDPs) are the authoritative source for a specific part. Each page declares its canonical URL in the HTML `<link rel="canonical">` tag and in Product JSON-LD `offers.url`. Use those when multiple URL forms resolve.
+
+Common URL patterns:
+
+- https://www.finditparts.com/products/{product_id}/{manufacturer-part-slug}
+- https://www.finditparts.com/p/{manufacturer-part-slug}-{product_id} (pretty URL for select manufacturers)
+
+Product Q&A pages:
+
+- https://www.finditparts.com/products/{product_id}/{manufacturer-part-slug}/q/{question_id}
+- https://www.finditparts.com/p/{manufacturer-part-slug}-{product_id}/q/{question_id}
+
+PDPs may include product name, part number, MPN, SKU, GTIN, manufacturer, brand, images, condition, description, specifications, PIES data, price, availability, shipping, cross references, fitment/application data, reviews, approved Q&A, and Schema.org Product or FAQPage structured data in the HTML head.
+
+## Interpretation
+
+- Treat part numbers and manufacturer names as exact identifiers; preserve spelling, punctuation, and capitalization from the page.
+- Do not infer fitment, interchange, compatibility, inventory, or pricing unless explicitly stated on the product page.
+- Price and availability change frequently; verify the live PDP before citing them as current.
+- If a page is marked noindex or unavailable, do not use it as a primary citation.
+- Use public PDP and category content for summaries. Do not use checkout, account, cart, order, admin, or internal API endpoints as product data sources.
+
+## Crawl behavior
+
+- Respect robots.txt and reasonable crawl rates.
+- Avoid high-frequency refetching of PDPs solely for price or availability changes.
+- Do not execute purchase flows, add-to-cart actions, forms, review submissions, Q&A submissions, or personalization endpoints.
+- Do not treat JavaScript/XHR endpoints (availability, recommendations, product reviews, product questions) as standalone citation pages.
+
+## Optional
+
+- [Contact](https://www.finditparts.com/contact): Business, partnership, or data-use inquiries.
+- [No Hassle Returns](https://www.finditparts.com/no_hassle_returns): FinditParts return policy (site-wide; not a per-SKU manufacturer warranty).

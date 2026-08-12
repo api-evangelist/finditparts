@@ -1,0 +1,115 @@
+generated: '2026-08-12'
+method: derived
+source: mcp/finditparts-mcp.yml
+also_derived_from: openapi/finditparts-reseller-api-openapi.yml
+note: >-
+  READ THE PROVENANCE BEFORE READING THE ROWS. This crosswalk does NOT reconcile two
+  independently published surfaces, because FinditParts publishes only one: the REST
+  Reseller API. There is no first-party MCP server and no GraphQL endpoint, so there is
+  no divergence to discover. Every tool below is a candidate API Evangelist proposed in
+  mcp/finditparts-mcp.yml by binding it to a REST operation in the first place — the
+  binding confidence is therefore high by construction, not by evidence, and mcp_only[]
+  is necessarily empty. The genuinely informative half of this file is rest_only[]:
+  the operations a minimum safe agent surface deliberately leaves behind, and why.
+surfaces:
+  openapi:
+    file: openapi/finditparts-reseller-api-openapi.yml
+    operations: 38
+    published_by_provider: false
+    note: >-
+      Derived from the first-party Postman collection FinditParts publishes at
+      https://api-docs.finditparts.com/. FinditParts publishes no OpenAPI itself.
+    gated: false
+    auth: reseller JWT (HS256) or issued API key
+  graphql:
+    endpoint: null
+    present: false
+  mcp:
+    url: null
+    present: false
+    status: candidate
+    tools_list_probed: false
+    note: No endpoint exists to probe.
+coverage:
+  tools_named: 22
+  tools_bound_to_rest: 22
+  tools_unbound: 0
+  mcp_only: 0
+  rest_operations_total: 38
+  rest_operations_with_a_tool: 22
+  rest_operations_without_a_tool: 16
+crosswalk:
+- {tool: search_parts, category: catalog, rest: [productSearch], binding: rest, confidence: high}
+- {tool: lookup_part_number, category: catalog, rest: [lookupProductByPartNumber], binding: rest, confidence: high}
+- {tool: get_product, category: catalog, rest: [getProduct], binding: rest, confidence: high}
+- {tool: get_products, category: catalog, rest: [getProductsMulti], binding: rest, confidence: high}
+- {tool: get_variants, category: catalog, rest: [variantLookup], binding: rest, confidence: high}
+- tool: quote_shipping
+  category: shipping
+  rest: [shippingMethods]
+  binding: rest
+  confidence: high
+  note: >-
+    partnersShippingMethods is a second, API-key-only path to the same capability on the
+    Partner surface. A server serving partner clients would bind that instead.
+- {tool: list_orders, category: orders, rest: [listOrders], binding: rest, confidence: high}
+- {tool: search_orders, category: orders, rest: [searchOrders], binding: rest, confidence: high}
+- {tool: get_order, category: orders, rest: [getOrder], binding: rest, confidence: high}
+- {tool: list_addresses, category: addresses, rest: [listAddresses], binding: rest, confidence: high}
+- {tool: create_cart, category: cart, rest: [createCart], binding: rest, confidence: high}
+- {tool: get_cart, category: cart, rest: [getCart], binding: rest, confidence: high}
+- {tool: add_to_cart, category: cart, rest: [addCartLineItem], binding: rest, confidence: high}
+- {tool: update_cart_line_items, category: cart, rest: [changeCartLineItems], binding: rest, confidence: high}
+- {tool: get_cart_shipping_methods, category: cart, rest: [getCartShippingMethods], binding: rest, confidence: high}
+- {tool: select_cart_shipping_method, category: cart, rest: [selectCartShippingMethod], binding: rest, confidence: high}
+- {tool: set_cart_shipping_address, category: cart, rest: [setCartShippingAddress], binding: rest, confidence: high}
+- {tool: set_cart_po_number, category: cart, rest: [setCartPoNumber], binding: rest, confidence: high}
+- tool: create_customer_session
+  category: reseller
+  rest: [createResellerCustomerSession]
+  binding: rest
+  confidence: high
+  note: >-
+    The REST call returns a redirect_url that must be rendered to a human. The tool
+    cannot complete the flow on its own — it hands off to the embedded surface
+    described in components/finditparts-components.yml, then polls getResellerCustomerSession.
+- {tool: get_customer_session, category: reseller, rest: [getResellerCustomerSession], binding: rest, confidence: high}
+- {tool: create_reseller_customer, category: reseller, rest: [createResellerCustomer], binding: rest, confidence: high}
+- {tool: list_reseller_customers, category: reseller, rest: [listResellerCustomers], binding: rest, confidence: high}
+mcp_only: []
+rest_only:
+- capability: checkout
+  operations: [completeCartWithCreditCard, completeCartWithCorporateBilling, partnersPlaceOrder]
+  reason: >-
+    Irreversible commercial order placement with no idempotency key published. Held out
+    of the candidate tool surface on purpose; see mcp/finditparts-mcp.yml safety_notes.
+- capability: session and credential management
+  operations: [createSession, refreshSession, getCurrentSession, destroySessions, createUser]
+  count: 5
+  reason: >-
+    These mint, refresh and revoke bearer credentials. They belong to the MCP server's
+    own auth layer, not to the agent-visible tool list.
+- capability: address book mutation
+  operations: [createAddress, updateAddress, deleteAddress, setDefaultAddress]
+  reason: Account-altering writes; omitted from the minimum surface, bindable with confirmation.
+- capability: cart mutation (secondary)
+  operations: [setCartBillingAddress, setCartCoupon]
+  reason: Omitted from the minimum surface; both bind cleanly if needed.
+- capability: order cancellation
+  operations: [cancelResellerCustomerSession]
+  reason: >-
+    Cancels a submitted order and can fail with errno 5 (Order is not cancelable).
+    Held out pending an explicit human-in-the-loop contract.
+- capability: partner shipping quote
+  operations: [partnersShippingMethods]
+  reason: >-
+    Duplicate capability on the Partner API-key surface; quote_shipping covers the
+    same need on the reseller surface.
+gaps_a_real_mcp_server_would_have_to_solve:
+- No idempotency key on any write — the server must de-duplicate order placement itself.
+- errno on 200 responses — the server must unwrap the envelope, not trust HTTP status.
+- No rate limits published — the server has no budget to plan or back off against.
+- >-
+  Pricing is credential-dependent: the same productSearch returns list price or
+  account_price depending on whether the JWT carries a sub Customer Reference. A tool
+  must make clear which price it returned.

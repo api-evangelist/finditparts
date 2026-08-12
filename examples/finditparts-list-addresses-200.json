@@ -1,0 +1,39 @@
+{
+  "errno": "<integer>",
+  "addresses": [
+    {
+      "id": "<integer>",
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "country_id": "<integer>",
+      "country_iso": "<string>",
+      "address1": "<string>",
+      "state_id": "<integer>",
+      "state_name": "<string>",
+      "city_name": "<string>",
+      "zipcode": "<string>",
+      "phone": "<string>",
+      "address_type": "residential",
+      "address2": "<string>",
+      "company": "<string>",
+      "is_default": "<boolean>"
+    },
+    {
+      "id": "<integer>",
+      "first_name": "<string>",
+      "last_name": "<string>",
+      "country_id": "<integer>",
+      "country_iso": "<string>",
+      "address1": "<string>",
+      "state_id": "<integer>",
+      "state_name": "<string>",
+      "city_name": "<string>",
+      "zipcode": "<string>",
+      "phone": "<string>",
+      "address_type": "residential",
+      "address2": "<string>",
+      "company": "<string>",
+      "is_default": "<boolean>"
+    }
+  ]
+}

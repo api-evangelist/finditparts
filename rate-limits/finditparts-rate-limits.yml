@@ -1,0 +1,55 @@
+generated: '2026-08-12'
+method: searched
+source: https://api-docs.finditparts.com/
+limit_count: 0
+note: >-
+  RECORDED ZERO. FinditParts publishes no rate limits for the Reseller API. Neither the
+  developer page nor the full Reseller API documentation mentions quotas, throttling,
+  concurrency caps, burst allowances or a 429 response, and none of the 38 operations
+  in the collection documents a rate-limit response or header. This is an unpublished
+  limit, not an absent one — a reseller integration polling productSearch or
+  shippingMethods has no published budget to plan against and no runtime signal to
+  back off on.
+limits: []
+response_headers:
+  published: []
+  checked:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  - RateLimit-Limit
+  - RateLimit-Remaining
+  - RateLimit-Reset
+  - RateLimit-Policy
+  - Retry-After
+  found: none
+exhaustion_status: null
+retry_guidance:
+  published: false
+  note: >-
+    No Retry-After, no backoff guidance and no documented 429. The only documented
+    non-2xx is 500 carrying the errno envelope, and errno 99 (Unknown error) is the
+    generic server fault. Because the API also has no idempotency key, blind retry of
+    a write is unsafe — see conventions/finditparts-conventions.yml.
+adjacent_constraints_published:
+- constraint: crawl rate
+  scope: website (not the API)
+  source: https://www.finditparts.com/llms.txt
+  detail: >-
+    FinditParts asks AI/LLM crawlers to "respect robots.txt and reasonable crawl rates"
+    and to avoid "high-frequency refetching of PDPs solely for price or availability
+    changes". This is guidance for web crawlers on the storefront, not a Reseller API
+    limit, and carries no number.
+- constraint: JWT expiry
+  scope: api
+  source: https://api-docs.finditparts.com/
+  detail: >-
+    Each request JWT must carry a short exp. This is an anti-replay control, not a
+    rate limit, but it does bound how long any single signed request stays usable.
+probes:
+- url: https://api-docs.finditparts.com/
+  status: 200
+  finding: no rate-limit section
+- url: https://www.finditparts.com/developers
+  status: 200
+  finding: no rate-limit section
