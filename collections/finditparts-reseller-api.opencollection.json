@@ -1,0 +1,1037 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "FinditParts Reseller API",
+    "version": "2.0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Product Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/products/:product_id",
+            "params": [
+              {
+                "name": "include_pies_data",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "product_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the Product Details\n\nRequires a generic JWT in the Authorization header.\n\nUse a customer referenced JWT to return account specific pricing or a Generic JWT token (no customer reference) to return list price."
+        },
+        {
+          "info": {
+            "name": "Product Details Multi",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/products/:product_ids/multi",
+            "params": [
+              {
+                "name": "product_ids",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the Product Details for each comma separated ID.\n\nRequires a generic JWT in the Authorization header.\n\nUse a customer referenced JWT to return account specific pricing or a Generic JWT token (no customer reference) to return list price."
+        },
+        {
+          "info": {
+            "name": "Lookup Product by Part Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/products/lookup",
+            "params": [
+              {
+                "name": "part_number",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns the Product Details for each Product that exactly matches the part number provided. Results are split by part number exact matches and cross reference exact matches.\n\nRequires a generic JWT in the Authorization header.\n\nUse a customer referenced JWT to return account specific pricing or a Generic JWT token (no customer reference) to return list price."
+        },
+        {
+          "info": {
+            "name": "Product Search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/products",
+            "params": [
+              {
+                "name": "part_number",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "m",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "strict",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ioos",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pf",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pt",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "per",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "psc",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ppt",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "c_d1",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "c_d2",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "c_d3",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "attrs",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "aggs",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "x_core",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "use_v3_search",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of products matching part number provided.\n\nOne of part_number or query parameter is required.\n\nRequires a JWT in the Authorization header with intent 'PRODUCT_SEARCH' and on behalf of a 'Customer Reference' (See Workflow section in /reseller_customer_sessions endpoint).\n\nUse a customer referenced JWT with intent PRODUCT_SEARCH to return account specific pricing or a Generic JWT token (no customer reference) to return list price.\n\nToggle between v3 and v2 search with use_v3_search"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Variants",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Variant Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/variants/:variant_ids",
+            "params": [
+              {
+                "name": "variant_ids",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the matching variants by ID\n\nRequires a JWT in the Authorization header with intent 'PRODUCT_SEARCH' and on behalf of a 'Customer Reference' (See Workflow section in /reseller_customer_sessions endpoint).\n\nUse a customer referenced JWT with intent PRODUCT_SEARCH to return account specific pricing or a Generic JWT token (no customer reference) to return list price.\n\nJWT payload for product search\nExample JWT payload (with customer reference sub to return account_price):\n\nJWT.sign({\n  sub:"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Shipping",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Shipping Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/shipping_methods",
+            "params": [
+              {
+                "name": "line_items",
+                "value": "",
+                "type": "query",
+                "description": "Repeated object-valued parameter. FinditParts documents the encoding as Rails bracket form, e.g. line_items[][variant_id]=123&line_items[][quantity]=1 — or line_items[][finditparts_product_id]=456&line_items[][quantity]=1. May also be supplied inside the JWT data payload instead."
+              },
+              {
+                "name": "zipcode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address1",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address2",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "city",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of shipping methods and estimated costs for a given order and address.\n\nThis API can be accessed using a JWT or an API key.\n\nAPI Key Authentication\nRequires an API Key in the Authorization header.\n\nParameters line_items and address should be sent as query parameters if using API Key Authentication.\n\nExample API Key Request\nSingle variant:\nGET /api/v1/shipping_methods.json?line_items[][variant_id]=123&line_items[][quantity]=1&address[zipcode]=93101\n\nMultiple variants via product_id"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reseller Customer Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Reseller Customer Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/reseller_customer_sessions/:reseller_customer_session_id",
+            "params": [
+              {
+                "name": "reseller_customer_session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns status and details of a session. For NEW_ORDER intent sessions, this will also return the order details including status and shipments. Use a Generic JWT token (no customer reference)."
+        },
+        {
+          "info": {
+            "name": "Cancels Reseller Customer Session Intent",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://finditparts.com/api/v1/reseller_customer_sessions/:reseller_customer_session_id",
+            "params": [
+              {
+                "name": "reseller_customer_session_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns new order status or user status depending on intent. For NEW_ORDER intent sessions, this request will attempt to cancel an order that was submitted or return an error if unable to cancel. Use a Generic JWT token (no customer reference)."
+        },
+        {
+          "info": {
+            "name": "Create Reseller Customer Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/reseller_customer_sessions"
+          },
+          "docs": "Creates a new Reseller Customer Session with intent of USER_SETUP or NEW_ORDER.\n\nReturns session details including redirect_url for embedding or redirecting.\n\nWorkflow\nEach Reseller Customer Session is generated on behalf of a \"Customer Reference\". A Customer Reference should be a unique handle to your customer which will then be linked to a FinditParts account. Common identifiers could be a user ID or an email. This is the reference you will use in the future to place orders on behalf of the li"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Refresh Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/sessions/refresh"
+          },
+          "docs": "Returns a new user and user specific JWT token that can be used in the Authentication header to perform API calls on behalf of a user or return user specific pricing.\n\nUser specific session JWTs have a default expiration of 1 month. Re-run this call prior to expiration to continually fetch new sessions as needed.\n\nRequires an existing and unexpired user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Get Current Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/sessions/current"
+          },
+          "docs": "Returns current session for user specific session JWT.\n\nRequires a user specific session JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Create Session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a user and user specific JWT token that can be used in the Authentication header to perform API calls on behalf of a user or return user specific pricing.\n\nUser specific sessions have a default expiration of 1 month. Use the refreshSession API call to refresh credentials before expiration if desired.\n\nRequires an API key in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Destroy Sessions",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://finditparts.com/api/v1/sessions"
+          },
+          "docs": "Destroys current sessions for user.\n\nRequires a user specific API key in the Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reseller Customers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Reseller Customers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/reseller_customers",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Requires a Master Account API key in the Authorization header.\n\nLists all Reseller Customers created for the master account API key"
+        },
+        {
+          "info": {
+            "name": "Create Reseller Customer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/reseller_customers",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requires a signed JWT on behalf of a Master Account API client in the Authorization header.\n\nCreates a subuser on your master account that can be referenced and acted upon using the customer_reference as the subject sub in the signed JWT used in API calls to endpoints such as /addresses, /carts, etc."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a user and user specific JWT token that can be used in the Authentication header to perform API calls on behalf of a user or return user specific pricing.\n\nRequires an API key in the Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Partners",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Partners Shipping Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/partners/shipping_methods",
+            "params": [
+              {
+                "name": "line_items",
+                "value": "",
+                "type": "query",
+                "description": "Repeated object-valued parameter. FinditParts documents the encoding as Rails bracket form, e.g. line_items[][variant_id]=123&line_items[][quantity]=1 — or line_items[][finditparts_product_id]=456&line_items[][quantity]=1. May also be supplied inside the JWT data payload instead."
+              },
+              {
+                "name": "zipcode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address1",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address2",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "city",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of the partners shipping methods and estimated costs for a given order and address.\n\nRequires a Partner API key in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Partners Place Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/partners/place_order",
+            "params": [
+              {
+                "name": "line_items",
+                "value": "",
+                "type": "query",
+                "description": "Repeated object-valued parameter. FinditParts documents the encoding as Rails bracket form, e.g. line_items[][variant_id]=123&line_items[][quantity]=1 — or line_items[][finditparts_product_id]=456&line_items[][quantity]=1. May also be supplied inside the JWT data payload instead."
+              },
+              {
+                "name": "customer_reference",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "shipping_method_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "po_number",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "partner_shipping_price",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "zipcode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address1",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address2",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "city",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "address_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Places a partner order.\n\nRequires a Partner API key in the Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/orders/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_field",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_direction",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of the users orders filtered by search parameters.\n\nRequires a user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Order Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the Order Details\n\nRequires a user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "List Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/orders",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns a list of the users orders.\n\nRequires a user specific JWT in the Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Addresses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Set Default Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/addresses/:address_id/set_as_default",
+            "params": [
+              {
+                "name": "address_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Sets a given users address as default.\n\nRequires a user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Update Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/addresses/:address_id",
+            "params": [
+              {
+                "name": "address_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a given users address and returns the address.\n\nRequires a user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Delete Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://finditparts.com/api/v1/addresses/:address_id",
+            "params": [
+              {
+                "name": "address_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deletes a given users address.\n\nRequires a user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "List Addresses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/addresses"
+          },
+          "docs": "Returns a list of the users addresses.\n\nRequires a user specific JWT in the Authorization header."
+        },
+        {
+          "info": {
+            "name": "Create Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/addresses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an address and returns the new address.\n\nRequires a user specific JWT in the Authorization header."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Carts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add Product to Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/line_items",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the Cart Details\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Change Cart Line Items",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/line_items",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the Line Items and returns the Cart Details\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Get Shipping Methods",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/shipping_methods",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the available shipping methods for the cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Cart Select Shipping Method",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/shipping_methods",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Set Shipping Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/shipping_address",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the Cart shipping address and returns the Cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Set Billing Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/billing_address",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sets the Cart billing address and returns the Cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Set Cart Coupon",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/coupon",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies a coupon to the Cart and returns the Cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Set Cart PO Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/po_number",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies a PO number to the Order and returns the Cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Places the Order with a Credit Card",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/complete_with_credit_card",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Places the Order with a credit card as the payment method and returns the Cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Places the Order with a Corporate Billing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id/complete_with_corporate_billing",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Places the Order with corporate billing (if available) as the payment method and returns the Cart\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Cart Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://finditparts.com/api/v1/carts/:cart_id",
+            "params": [
+              {
+                "name": "cart_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the Cart Details\n\nRequires an user specific JWT in the Authorization header or a cart token parameter."
+        },
+        {
+          "info": {
+            "name": "Create new Cart",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://finditparts.com/api/v1/carts"
+          },
+          "docs": "Creates a new Cart (draft Order).\n\nRequires a user specific JWT in the Authorization header."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

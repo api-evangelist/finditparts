@@ -12,48 +12,38 @@ search:
   - PyPI, RubyGems, Packagist, crates.io, NuGet
   - web search for a FinditParts MCP server
   - https://www.finditparts.com/.well-known/ai-plugin.json (404)
-  result: >-
-    FinditParts publishes no hosted, remote or local MCP server, and no agent-facing
-    tool surface of any kind. NOT PUBLISHED BY FINDITPARTS — the tool set below is a
-    candidate derived by API Evangelist from the operations of the Reseller API as a
-    proposal for what an MCP surface would look like. Every tool binds to a real
-    operationId in openapi/finditparts-reseller-api-openapi.yml, so each one's true
+  result: FinditParts publishes no hosted, remote or local MCP server, and no agent-facing tool surface
+    of any kind. NOT PUBLISHED BY FINDITPARTS — the tool set below is a candidate derived by API Evangelist
+    from the operations of the Reseller API as a proposal for what an MCP surface would look like. Every
+    tool binds to a real operationId in openapi/finditparts-reseller-api-openapi.yml, so each one's true
     input schema is that operation's parameters and requestBody.
 server: null
 transport: null
 url: null
 auth:
-  note: >-
-    Any real server would have to carry the reseller credential server-side, not in the
-    agent. FinditParts requires a fresh HS256 JWT signed with the Reseller Client Secret
-    per request, with iss, exp and — for account pricing and any order action — a sub
-    Customer Reference. An MCP server would sign per call and expose the Customer
-    Reference as a tool argument or as session state.
+  note: Any real server would have to carry the reseller credential server-side, not in the agent. FinditParts
+    requires a fresh HS256 JWT signed with the Reseller Client Secret per request, with iss, exp and —
+    for account pricing and any order action — a sub Customer Reference. An MCP server would sign per
+    call and expose the Customer Reference as a tool argument or as session state.
   scheme: bearer (reseller JWT or api- key)
   detail: authentication/finditparts-authentication.yml
 safety_notes:
-- >-
-  Six operations place or cancel real commercial orders for heavy-duty parts
-  (completeCartWithCreditCard, completeCartWithCorporateBilling, partnersPlaceOrder,
-  createResellerCustomerSession with NEW_ORDER intent, cancelResellerCustomerSession,
-  addCartLineItem). agentic-access/finditparts-agentic-access.yml classifies these at
-  consequence physical.
-- >-
-  FinditParts publishes NO idempotency key. A retried checkout tool call can duplicate
-  an order. Any MCP server built on this API must de-duplicate on its own side.
-- >-
-  errno rides on 200 responses. A tool wrapper that checks HTTP status only will report
-  failures as successes.
+- Six operations place or cancel real commercial orders for heavy-duty parts (completeCartWithCreditCard,
+  completeCartWithCorporateBilling, partnersPlaceOrder, createResellerCustomerSession with NEW_ORDER intent,
+  cancelResellerCustomerSession, addCartLineItem). agentic-access/finditparts-agentic-access.yml classifies
+  these at consequence physical.
+- FinditParts publishes NO idempotency key. A retried checkout tool call can duplicate an order. Any MCP
+  server built on this API must de-duplicate on its own side.
+- errno rides on 200 responses. A tool wrapper that checks HTTP status only will report failures as successes.
 tools:
 - name: search_parts
-  description: Search the FinditParts catalog by part number or free-text query, with
-    manufacturer, category, price-range and attribute filters.
+  description: Search the FinditParts catalog by part number or free-text query, with manufacturer, category,
+    price-range and attribute filters.
   category: catalog
   source_operation: openapi/finditparts-reseller-api-openapi.yml#productSearch
   read_only: true
 - name: lookup_part_number
-  description: Find products whose part number or cross-reference exactly matches a
-    given part number.
+  description: Find products whose part number or cross-reference exactly matches a given part number.
   category: catalog
   source_operation: openapi/finditparts-reseller-api-openapi.yml#lookupProductByPartNumber
   read_only: true
@@ -138,8 +128,8 @@ tools:
   source_operation: openapi/finditparts-reseller-api-openapi.yml#setCartPoNumber
   read_only: false
 - name: create_customer_session
-  description: Create a hosted USER_SETUP or NEW_ORDER session and return the embeddable
-    finditparts.com URL.
+  description: Create a hosted USER_SETUP or NEW_ORDER session and return the embeddable finditparts.com
+    URL.
   category: reseller
   source_operation: openapi/finditparts-reseller-api-openapi.yml#createResellerCustomerSession
   read_only: false
@@ -161,15 +151,34 @@ tools:
   read_only: true
 tool_count: 22
 excluded_from_candidate_surface:
-- operations: [completeCartWithCreditCard, completeCartWithCorporateBilling, partnersPlaceOrder]
-  reason: >-
-    Irreversible commercial checkout with no idempotency contract. Deliberately not
-    proposed as agent tools; route through the hosted NEW_ORDER session where a human
-    confirms, or gate behind an explicit human-in-the-loop step.
-- operations: [createSession, refreshSession, destroySessions, getCurrentSession, createUser]
+- operations:
+  - completeCartWithCreditCard
+  - completeCartWithCorporateBilling
+  - partnersPlaceOrder
+  reason: Irreversible commercial checkout with no idempotency contract. Deliberately not proposed as
+    agent tools; route through the hosted NEW_ORDER session where a human confirms, or gate behind an
+    explicit human-in-the-loop step.
+- operations:
+  - createSession
+  - refreshSession
+  - destroySessions
+  - getCurrentSession
+  - createUser
   reason: Credential-handling operations; belong to the server, not the agent tool surface.
-- operations: [createAddress, updateAddress, deleteAddress, setDefaultAddress, setCartBillingAddress, setCartCoupon, cancelResellerCustomerSession, partnersShippingMethods]
-  reason: >-
-    Available to bind, but omitted from the proposed minimum surface — address mutation,
-    coupon application and order cancellation are account-altering and better handled
-    with explicit confirmation.
+- operations:
+  - createAddress
+  - updateAddress
+  - deleteAddress
+  - setDefaultAddress
+  - setCartBillingAddress
+  - setCartCoupon
+  - cancelResellerCustomerSession
+  - partnersShippingMethods
+  reason: Available to bind, but omitted from the proposed minimum surface — address mutation, coupon
+    application and order cancellation are account-altering and better handled with explicit confirmation.
+deployment:
+  mode: none
+  verified: derived
+  tools: 22
+  checked: '2026-08-12'
+  source: catalog MCP census
