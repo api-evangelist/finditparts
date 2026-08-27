@@ -43,35 +43,16 @@ tags_raw:
 - Orders
 - Shipping
 apis:
-- aid: finditparts:finditparts-reseller-api
-  name: FinditParts Reseller API
-  description: 'The FinditParts Reseller API allows you to search parts inventory,
-    create and integrate FinditParts accounts, quote shipping rates for orders, and
-    place orders on behalf of linked FinditParts users. It spans catalog search and
-    part-number lookup, variant price/availability, shipping-method quoting, hosted
-    USER_SETUP and NEW_ORDER customer sessions, cart and checkout, address book, and
-    order history — 38 operations across 31 paths. Authentication is a short-lived
-    HS256 JWT signed with a Reseller Client Secret, or an issued API key for client-side
-    and single-buyer partner applications.'
+- aid: finditparts:finditparts-addresses-api
+  name: FinditParts Addresses API
+  description: Shipping and billing address book for a user-specific session.
   humanURL: https://www.finditparts.com/developers
   baseURL: https://finditparts.com/api/v1
   tags:
-  - Parts
-  - Catalog
-  - E-Commerce
-  - Order
-  - Shipping
-  - Cart
-  tags_raw:
-  - Parts
-  - Catalog
-  - Ecommerce
-  - Orders
-  - Shipping
-  - Carts
+  - Addresses
   properties:
   - type: OpenAPI
-    url: openapi/finditparts-reseller-api-openapi.yml
+    url: openapi/finditparts-addresses-api-openapi.yml
   - type: Postman
     url: https://documenter.getpostman.com/view/12847304/TVReeWcY
   - type: Documentation
@@ -84,12 +65,273 @@ apis:
     url: errors/finditparts-error-codes.yml
   - type: Examples
     url: examples/_index.yml
-  - type: MCPServer
-    url: mcp/finditparts-mcp.yml
   - type: ToolCrosswalk
     url: mcp/finditparts-tool-crosswalk.yml
-  - type: Overlay
-    url: overlays/finditparts-reseller-api-overlay.yaml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-carts-api
+  name: FinditParts Carts API
+  description: >-
+    Draft-order (cart) lifecycle: line items, addresses, shipping method, coupon, PO number and checkout.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Carts
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-carts-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-orders-api
+  name: FinditParts Orders API
+  description: Order listing, search and detail for a user-specific session.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-orders-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-partners-api
+  name: FinditParts Partners API
+  description: Partner API-key surface for white-label shipping quotes and order placement.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Partners
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-partners-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-products-api
+  name: FinditParts Products API
+  description: >-
+    Part search, part-number lookup and product/variant detail across the FinditParts catalog.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Products
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-products-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-reseller-customer-sessions-api
+  name: FinditParts Reseller Customer Sessions API
+  description: >-
+    Hosted USER_SETUP and NEW_ORDER sessions returned as a finditparts.com redirect_url for iframe embedding
+    or redirect.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Reseller Customer Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-reseller-customer-sessions-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-reseller-customers-api
+  name: FinditParts Reseller Customers API
+  description: Sub-users created on a reseller master account and addressed by customer_reference.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Reseller Customers
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-reseller-customers-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-sessions-api
+  name: FinditParts Sessions API
+  description: User-specific JWT session creation, refresh, inspection and destruction.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Sessions
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-sessions-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-shipping-api
+  name: FinditParts Shipping API
+  description: >-
+    Shipping method quoting and estimated cost for a proposed set of line items and an address.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Shipping
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-shipping-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-users-api
+  name: FinditParts Users API
+  description: Direct FinditParts user creation for API-key clients.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-users-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
+  - type: DataModel
+    url: data-model/finditparts-data-model.yml
+- aid: finditparts:finditparts-variants-api
+  name: FinditParts Variants API
+  description: Variant-level price, quantity, cutoff and core lookups.
+  humanURL: https://www.finditparts.com/developers
+  baseURL: https://finditparts.com/api/v1
+  tags:
+  - Variants
+  properties:
+  - type: OpenAPI
+    url: openapi/finditparts-variants-api-openapi.yml
+  - type: Postman
+    url: https://documenter.getpostman.com/view/12847304/TVReeWcY
+  - type: Documentation
+    url: https://api-docs.finditparts.com/
+  - type: APIReference
+    url: https://api-docs.finditparts.com/
+  - type: Authentication
+    url: authentication/finditparts-authentication.yml
+  - type: ErrorCatalog
+    url: errors/finditparts-error-codes.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/finditparts-tool-crosswalk.yml
   - type: DataModel
     url: data-model/finditparts-data-model.yml
 maintainers:
@@ -98,6 +340,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/finditparts-reseller-api-overlay.yaml
 - type: Website
   url: https://www.finditparts.com/
 - type: DeveloperPortal
