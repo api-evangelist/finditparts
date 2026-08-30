@@ -88,6 +88,8 @@ apis:
   humanURL: https://www.finditparts.com/developers
   baseURL: https://finditparts.com/api/v1
   tags:
+  - Cart
+  tags_raw:
   - Carts
   properties:
   - type: OpenAPI
@@ -114,6 +116,8 @@ apis:
   humanURL: https://www.finditparts.com/developers
   baseURL: https://finditparts.com/api/v1
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -167,6 +171,8 @@ apis:
   humanURL: https://www.finditparts.com/developers
   baseURL: https://finditparts.com/api/v1
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
@@ -300,6 +306,8 @@ apis:
   humanURL: https://www.finditparts.com/developers
   baseURL: https://finditparts.com/api/v1
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
