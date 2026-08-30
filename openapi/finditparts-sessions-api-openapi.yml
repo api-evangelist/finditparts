@@ -1,0 +1,588 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Sessions API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Sessions
+  description: User-specific JWT session creation, refresh, inspection and destruction.
+paths:
+  /sessions/refresh:
+    post:
+      operationId: refreshSession
+      summary: Refresh Session
+      tags:
+      - Sessions
+      description: 'Returns a new user and user specific JWT token that can be used in the Authentication header to perform API calls on behalf of a user or return user specific pricing.
+
+
+        User specific session JWTs have a default expiration of 1 month. Re-run this call prior to expiration to continually fetch new sessions as needed.
+
+
+        Requires an existing and unexpired user specific JWT in the Authorization header.'
+      responses:
+        '200':
+          description: 'Refresh Session Response: User specific JWT'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      company:
+                        type: string
+                      payment_processor_client_token:
+                        type: string
+                      shipping_address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country_id:
+                            type: integer
+                          country_iso:
+                            type: string
+                          address1:
+                            type: string
+                          state_id:
+                            type: integer
+                          state_name:
+                            type: string
+                          city_name:
+                            type: string
+                          zipcode:
+                            type: string
+                          phone:
+                            type: string
+                          address_type:
+                            type: string
+                            examples:
+                            - residential
+                          address2:
+                            type: string
+                          company:
+                            type: string
+                          is_default:
+                            type: boolean
+                      billing_address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country_id:
+                            type: integer
+                          country_iso:
+                            type: string
+                          address1:
+                            type: string
+                          state_id:
+                            type: integer
+                          state_name:
+                            type: string
+                          city_name:
+                            type: string
+                          zipcode:
+                            type: string
+                          phone:
+                            type: string
+                          address_type:
+                            type: string
+                            examples:
+                            - residential
+                          address2:
+                            type: string
+                          company:
+                            type: string
+                          is_default:
+                            type: boolean
+                  errno:
+                    type: integer
+              example:
+                jwt: <string>
+                user:
+                  id: <string>
+                  email: <string>
+                  firstname: <string>
+                  lastname: <string>
+                  company: <string>
+                  payment_processor_client_token: <string>
+                  shipping_address:
+                    id: <integer>
+                    first_name: <string>
+                    last_name: <string>
+                    country_id: <integer>
+                    country_iso: <string>
+                    address1: <string>
+                    state_id: <integer>
+                    state_name: <string>
+                    city_name: <string>
+                    zipcode: <string>
+                    phone: <string>
+                    address_type: residential
+                    address2: <string>
+                    company: <string>
+                    is_default: <boolean>
+                  billing_address:
+                    id: <integer>
+                    first_name: <string>
+                    last_name: <string>
+                    country_id: <integer>
+                    country_iso: <string>
+                    address1: <string>
+                    state_id: <integer>
+                    state_name: <string>
+                    city_name: <string>
+                    zipcode: <string>
+                    phone: <string>
+                    address_type: residential
+                    address2: <string>
+                    company: <string>
+                    is_default: <boolean>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/sessions/refresh
+  /sessions/current:
+    get:
+      operationId: getCurrentSession
+      summary: Get Current Session
+      tags:
+      - Sessions
+      description: 'Returns current session for user specific session JWT.
+
+
+        Requires a user specific session JWT in the Authorization header.'
+      responses:
+        '200':
+          description: 'Get Current Session Response: Current user'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      company:
+                        type: string
+                      payment_processor_client_token:
+                        type: string
+                      shipping_address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country_id:
+                            type: integer
+                          country_iso:
+                            type: string
+                          address1:
+                            type: string
+                          state_id:
+                            type: integer
+                          state_name:
+                            type: string
+                          city_name:
+                            type: string
+                          zipcode:
+                            type: string
+                          phone:
+                            type: string
+                          address_type:
+                            type: string
+                            examples:
+                            - commercial
+                          address2:
+                            type: string
+                          company:
+                            type: string
+                          is_default:
+                            type: boolean
+                      billing_address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country_id:
+                            type: integer
+                          country_iso:
+                            type: string
+                          address1:
+                            type: string
+                          state_id:
+                            type: integer
+                          state_name:
+                            type: string
+                          city_name:
+                            type: string
+                          zipcode:
+                            type: string
+                          phone:
+                            type: string
+                          address_type:
+                            type: string
+                            examples:
+                            - residential
+                          address2:
+                            type: string
+                          company:
+                            type: string
+                          is_default:
+                            type: boolean
+                  errno:
+                    type: integer
+              example:
+                user:
+                  id: <string>
+                  email: <string>
+                  firstname: <string>
+                  lastname: <string>
+                  company: <string>
+                  payment_processor_client_token: <string>
+                  shipping_address:
+                    id: <integer>
+                    first_name: <string>
+                    last_name: <string>
+                    country_id: <integer>
+                    country_iso: <string>
+                    address1: <string>
+                    state_id: <integer>
+                    state_name: <string>
+                    city_name: <string>
+                    zipcode: <string>
+                    phone: <string>
+                    address_type: commercial
+                    address2: <string>
+                    company: <string>
+                    is_default: <boolean>
+                  billing_address:
+                    id: <integer>
+                    first_name: <string>
+                    last_name: <string>
+                    country_id: <integer>
+                    country_iso: <string>
+                    address1: <string>
+                    state_id: <integer>
+                    state_name: <string>
+                    city_name: <string>
+                    zipcode: <string>
+                    phone: <string>
+                    address_type: residential
+                    address2: <string>
+                    company: <string>
+                    is_default: <boolean>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/sessions/current
+  /sessions:
+    post:
+      operationId: createSession
+      summary: Create Session
+      tags:
+      - Sessions
+      description: 'Returns a user and user specific JWT token that can be used in the Authentication header to perform API calls on behalf of a user or return user specific pricing.
+
+
+        User specific sessions have a default expiration of 1 month. Use the refreshSession API call to refresh credentials before expiration if desired.
+
+
+        Requires an API key in the Authorization header.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            example:
+              email: <string>
+              password: <string>
+      responses:
+        '200':
+          description: 'Create Session Response: User specific JWT'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      email:
+                        type: string
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      company:
+                        type: string
+                      payment_processor_client_token:
+                        type: string
+                      shipping_address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country_id:
+                            type: integer
+                          country_iso:
+                            type: string
+                          address1:
+                            type: string
+                          state_id:
+                            type: integer
+                          state_name:
+                            type: string
+                          city_name:
+                            type: string
+                          zipcode:
+                            type: string
+                          phone:
+                            type: string
+                          address_type:
+                            type: string
+                            examples:
+                            - residential
+                          address2:
+                            type: string
+                          company:
+                            type: string
+                          is_default:
+                            type: boolean
+                      billing_address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                          country_id:
+                            type: integer
+                          country_iso:
+                            type: string
+                          address1:
+                            type: string
+                          state_id:
+                            type: integer
+                          state_name:
+                            type: string
+                          city_name:
+                            type: string
+                          zipcode:
+                            type: string
+                          phone:
+                            type: string
+                          address_type:
+                            type: string
+                            examples:
+                            - residential
+                          address2:
+                            type: string
+                          company:
+                            type: string
+                          is_default:
+                            type: boolean
+                  errno:
+                    type: integer
+              example:
+                jwt: <string>
+                user:
+                  id: <string>
+                  email: <string>
+                  firstname: <string>
+                  lastname: <string>
+                  company: <string>
+                  payment_processor_client_token: <string>
+                  shipping_address:
+                    id: <integer>
+                    first_name: <string>
+                    last_name: <string>
+                    country_id: <integer>
+                    country_iso: <string>
+                    address1: <string>
+                    state_id: <integer>
+                    state_name: <string>
+                    city_name: <string>
+                    zipcode: <string>
+                    phone: <string>
+                    address_type: residential
+                    address2: <string>
+                    company: <string>
+                    is_default: <boolean>
+                  billing_address:
+                    id: <integer>
+                    first_name: <string>
+                    last_name: <string>
+                    country_id: <integer>
+                    country_iso: <string>
+                    address1: <string>
+                    state_id: <integer>
+                    state_name: <string>
+                    city_name: <string>
+                    zipcode: <string>
+                    phone: <string>
+                    address_type: residential
+                    address2: <string>
+                    company: <string>
+                    is_default: <boolean>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/sessions
+    delete:
+      operationId: destroySessions
+      summary: Destroy Sessions
+      tags:
+      - Sessions
+      description: 'Destroys current sessions for user.
+
+
+        Requires a user specific API key in the Authorization header.'
+      responses:
+        '200':
+          description: Destroy Sessions Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/sessions
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'

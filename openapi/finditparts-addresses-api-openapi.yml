@@ -1,0 +1,520 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Addresses API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Addresses
+  description: Shipping and billing address book for a user-specific session.
+paths:
+  /addresses/{address_id}/set_as_default:
+    post:
+      operationId: setDefaultAddress
+      summary: Set Default Address
+      tags:
+      - Addresses
+      description: 'Sets a given users address as default.
+
+
+        Requires a user specific JWT in the Authorization header.'
+      parameters:
+      - name: address_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Set Default Address Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/addresses/:address_id/set_as_default
+  /addresses/{address_id}:
+    put:
+      operationId: updateAddress
+      summary: Update Address
+      tags:
+      - Addresses
+      description: 'Updates a given users address and returns the address.
+
+
+        Requires a user specific JWT in the Authorization header.'
+      parameters:
+      - name: address_id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                address1:
+                  type: string
+                phone:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zipcode:
+                  type: string
+                country:
+                  type: string
+                address2:
+                  type: string
+                company:
+                  type: string
+                address_type:
+                  type: string
+                  examples:
+                  - commercial
+            example:
+              first_name: <string>
+              last_name: <string>
+              address1: <string>
+              phone: <string>
+              city: <string>
+              state: <string>
+              zipcode: <string>
+              country: <string>
+              address2: <string>
+              company: <string>
+              address_type: commercial
+      responses:
+        '200':
+          description: Update Address Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        country_id:
+                          type: integer
+                        country_iso:
+                          type: string
+                        address1:
+                          type: string
+                        state_id:
+                          type: integer
+                        state_name:
+                          type: string
+                        city_name:
+                          type: string
+                        zipcode:
+                          type: string
+                        phone:
+                          type: string
+                        address_type:
+                          type: string
+                          examples:
+                          - residential
+                        address2:
+                          type: string
+                        company:
+                          type: string
+                        is_default:
+                          type: boolean
+              example:
+                errno: <integer>
+                addresses:
+                - id: <integer>
+                  first_name: <string>
+                  last_name: <string>
+                  country_id: <integer>
+                  country_iso: <string>
+                  address1: <string>
+                  state_id: <integer>
+                  state_name: <string>
+                  city_name: <string>
+                  zipcode: <string>
+                  phone: <string>
+                  address_type: residential
+                  address2: <string>
+                  company: <string>
+                  is_default: <boolean>
+                - id: <integer>
+                  first_name: <string>
+                  last_name: <string>
+                  country_id: <integer>
+                  country_iso: <string>
+                  address1: <string>
+                  state_id: <integer>
+                  state_name: <string>
+                  city_name: <string>
+                  zipcode: <string>
+                  phone: <string>
+                  address_type: residential
+                  address2: <string>
+                  company: <string>
+                  is_default: <boolean>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/addresses/:address_id
+    delete:
+      operationId: deleteAddress
+      summary: Delete Address
+      tags:
+      - Addresses
+      description: 'Deletes a given users address.
+
+
+        Requires a user specific JWT in the Authorization header.'
+      parameters:
+      - name: address_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Delete Address Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/addresses/:address_id
+  /addresses:
+    get:
+      operationId: listAddresses
+      summary: List Addresses
+      tags:
+      - Addresses
+      description: 'Returns a list of the users addresses.
+
+
+        Requires a user specific JWT in the Authorization header.'
+      responses:
+        '200':
+          description: List Addresses Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  addresses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        country_id:
+                          type: integer
+                        country_iso:
+                          type: string
+                        address1:
+                          type: string
+                        state_id:
+                          type: integer
+                        state_name:
+                          type: string
+                        city_name:
+                          type: string
+                        zipcode:
+                          type: string
+                        phone:
+                          type: string
+                        address_type:
+                          type: string
+                          examples:
+                          - residential
+                        address2:
+                          type: string
+                        company:
+                          type: string
+                        is_default:
+                          type: boolean
+              example:
+                errno: <integer>
+                addresses:
+                - id: <integer>
+                  first_name: <string>
+                  last_name: <string>
+                  country_id: <integer>
+                  country_iso: <string>
+                  address1: <string>
+                  state_id: <integer>
+                  state_name: <string>
+                  city_name: <string>
+                  zipcode: <string>
+                  phone: <string>
+                  address_type: residential
+                  address2: <string>
+                  company: <string>
+                  is_default: <boolean>
+                - id: <integer>
+                  first_name: <string>
+                  last_name: <string>
+                  country_id: <integer>
+                  country_iso: <string>
+                  address1: <string>
+                  state_id: <integer>
+                  state_name: <string>
+                  city_name: <string>
+                  zipcode: <string>
+                  phone: <string>
+                  address_type: residential
+                  address2: <string>
+                  company: <string>
+                  is_default: <boolean>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/addresses
+    post:
+      operationId: createAddress
+      summary: Create Address
+      tags:
+      - Addresses
+      description: 'Creates an address and returns the new address.
+
+
+        Requires a user specific JWT in the Authorization header.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                address1:
+                  type: string
+                phone:
+                  type: string
+                city:
+                  type: string
+                state:
+                  type: string
+                zipcode:
+                  type: string
+                country:
+                  type: string
+                address2:
+                  type: string
+                company:
+                  type: string
+                address_type:
+                  type: string
+                  examples:
+                  - commercial
+            example:
+              first_name: <string>
+              last_name: <string>
+              address1: <string>
+              phone: <string>
+              city: <string>
+              state: <string>
+              zipcode: <string>
+              country: <string>
+              address2: <string>
+              company: <string>
+              address_type: commercial
+      responses:
+        '200':
+          description: 'Create Address Response: Address'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      country_id:
+                        type: integer
+                      country_iso:
+                        type: string
+                      address1:
+                        type: string
+                      state_id:
+                        type: integer
+                      state_name:
+                        type: string
+                      city_name:
+                        type: string
+                      zipcode:
+                        type: string
+                      phone:
+                        type: string
+                      address_type:
+                        type: string
+                        examples:
+                        - commercial
+                      address2:
+                        type: string
+                      company:
+                        type: string
+                      is_default:
+                        type: boolean
+              example:
+                errno: <integer>
+                address:
+                  id: <integer>
+                  first_name: <string>
+                  last_name: <string>
+                  country_id: <integer>
+                  country_iso: <string>
+                  address1: <string>
+                  state_id: <integer>
+                  state_name: <string>
+                  city_name: <string>
+                  zipcode: <string>
+                  phone: <string>
+                  address_type: commercial
+                  address2: <string>
+                  company: <string>
+                  is_default: <boolean>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/addresses
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'

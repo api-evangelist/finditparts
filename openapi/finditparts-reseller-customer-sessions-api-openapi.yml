@@ -1,0 +1,1449 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Reseller Customer Sessions API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Reseller Customer Sessions
+  description: Hosted USER_SETUP and NEW_ORDER sessions returned as a finditparts.com redirect_url for iframe embedding or redirect.
+paths:
+  /reseller_customer_sessions/{reseller_customer_session_id}:
+    get:
+      operationId: getResellerCustomerSession
+      summary: Get Reseller Customer Session
+      tags:
+      - Reseller Customer Sessions
+      description: Returns status and details of a session. For NEW_ORDER intent sessions, this will also return the order details including status and shipments. Use a Generic JWT token (no customer reference).
+      parameters:
+      - name: reseller_customer_session_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Reseller Customer Session Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reseller_customer_session:
+                    type: object
+                    properties:
+                      intent:
+                        type: string
+                        examples:
+                        - user_setup
+                      id:
+                        type: string
+                      redirect_url:
+                        type: string
+                      resolution:
+                        type: string
+                        examples:
+                        - pending
+                      order:
+                        type: object
+                        properties:
+                          number:
+                            type: string
+                          state:
+                            type: string
+                            examples:
+                            - returned
+                          total:
+                            type: string
+                          items_total:
+                            type: string
+                          po_number:
+                            type: string
+                          customer_reference:
+                            type: string
+                          user_id:
+                            type: string
+                          shipping_method_name:
+                            type: string
+                          shipping_method_id:
+                            type: string
+                          shipping_carrier_type:
+                            type: string
+                          shipping_address:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              first_name:
+                                type: string
+                              last_name:
+                                type: string
+                              country_id:
+                                type: integer
+                              country_iso:
+                                type: string
+                              address1:
+                                type: string
+                              state_id:
+                                type: integer
+                              state_name:
+                                type: string
+                              city_name:
+                                type: string
+                              zipcode:
+                                type: string
+                              phone:
+                                type: string
+                              address_type:
+                                type: string
+                                examples:
+                                - residential
+                              address2:
+                                type: string
+                              company:
+                                type: string
+                              is_default:
+                                type: boolean
+                          billing_address:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              first_name:
+                                type: string
+                              last_name:
+                                type: string
+                              country_id:
+                                type: integer
+                              country_iso:
+                                type: string
+                              address1:
+                                type: string
+                              state_id:
+                                type: integer
+                              state_name:
+                                type: string
+                              city_name:
+                                type: string
+                              zipcode:
+                                type: string
+                              phone:
+                                type: string
+                              address_type:
+                                type: string
+                                examples:
+                                - residential
+                              address2:
+                                type: string
+                              company:
+                                type: string
+                              is_default:
+                                type: boolean
+                          completed_at:
+                            type: string
+                          url:
+                            type: string
+                          line_items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                quantity:
+                                  type: integer
+                                amount:
+                                  type: number
+                                  format: float
+                                manufacturer:
+                                  type: string
+                                part_number:
+                                  type: string
+                                pack_qty:
+                                  type: number
+                                variant:
+                                  type: object
+                                  properties:
+                                    variant_id:
+                                      type: integer
+                                    price:
+                                      type: string
+                                    quantity:
+                                      type: integer
+                                    pack_quantity:
+                                      type: integer
+                                    minimum:
+                                      type: integer
+                                    verified:
+                                      type: boolean
+                                    location:
+                                      type: string
+                                    timezone:
+                                      type: string
+                                    cutoff:
+                                      type: string
+                                      format: date-time
+                                    past_cutoff:
+                                      type: boolean
+                                    core_price:
+                                      type: string
+                                    estimated_business_days_to_ship:
+                                      type: integer
+                                    estimated_ship_date:
+                                      type: string
+                                      format: date-time
+                                    estimated_days_to_deliver:
+                                      type: integer
+                                    estimated_delivery_date_ground:
+                                      type: string
+                                      format: date-time
+                                    account_price:
+                                      type: string
+                                    minimum_order:
+                                      type: string
+                                    minimum_order_fee:
+                                      type: string
+                                product_images:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      product:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      large:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      small:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      medium:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                variant_id:
+                                  type: integer
+                                product_id:
+                                  type: integer
+                          adjustments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                label:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: float
+                          shipments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                carrier:
+                                  type: string
+                                is_shipped:
+                                  type: boolean
+                                is_delivered:
+                                  type: boolean
+                                has_tracking:
+                                  type: boolean
+                                shipping_method:
+                                  type: string
+                                tracking_number:
+                                  type: string
+                          payments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: float
+                      expires_at:
+                        type: string
+                      customer_reference:
+                        type: string
+                  errno:
+                    type: integer
+              example:
+                reseller_customer_session:
+                  intent: user_setup
+                  id: <string>
+                  redirect_url: <string>
+                  resolution: pending
+                  order:
+                    number: <string>
+                    state: returned
+                    total: <string>
+                    items_total: <string>
+                    po_number: <string>
+                    customer_reference: <string>
+                    user_id: <string>
+                    shipping_method_name: <string>
+                    shipping_method_id: <string>
+                    shipping_carrier_type: <string>
+                    shipping_address:
+                      id: <integer>
+                      first_name: <string>
+                      last_name: <string>
+                      country_id: <integer>
+                      country_iso: <string>
+                      address1: <string>
+                      state_id: <integer>
+                      state_name: <string>
+                      city_name: <string>
+                      zipcode: <string>
+                      phone: <string>
+                      address_type: residential
+                      address2: <string>
+                      company: <string>
+                      is_default: <boolean>
+                    billing_address:
+                      id: <integer>
+                      first_name: <string>
+                      last_name: <string>
+                      country_id: <integer>
+                      country_iso: <string>
+                      address1: <string>
+                      state_id: <integer>
+                      state_name: <string>
+                      city_name: <string>
+                      zipcode: <string>
+                      phone: <string>
+                      address_type: residential
+                      address2: <string>
+                      company: <string>
+                      is_default: <boolean>
+                    completed_at: <string>
+                    url: <string>
+                    line_items:
+                    - id: <integer>
+                      quantity: <integer>
+                      amount: <float>
+                      manufacturer: <string>
+                      part_number: <string>
+                      pack_qty: <number>
+                      variant:
+                        variant_id: <integer>
+                        price: <string>
+                        quantity: <integer>
+                        pack_quantity: <integer>
+                        minimum: <integer>
+                        verified: <boolean>
+                        location: <string>
+                        timezone: <string>
+                        cutoff: <dateTime>
+                        past_cutoff: <boolean>
+                        core_price: <string>
+                        estimated_business_days_to_ship: <integer>
+                        estimated_ship_date: <dateTime>
+                        estimated_days_to_deliver: <integer>
+                        estimated_delivery_date_ground: <dateTime>
+                        account_price: <string>
+                        minimum_order: <string>
+                        minimum_order_fee: <string>
+                      product_images:
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      variant_id: <integer>
+                      product_id: <integer>
+                    - id: <integer>
+                      quantity: <integer>
+                      amount: <float>
+                      manufacturer: <string>
+                      part_number: <string>
+                      pack_qty: <number>
+                      variant:
+                        variant_id: <integer>
+                        price: <string>
+                        quantity: <integer>
+                        pack_quantity: <integer>
+                        minimum: <integer>
+                        verified: <boolean>
+                        location: <string>
+                        timezone: <string>
+                        cutoff: <dateTime>
+                        past_cutoff: <boolean>
+                        core_price: <string>
+                        estimated_business_days_to_ship: <integer>
+                        estimated_ship_date: <dateTime>
+                        estimated_days_to_deliver: <integer>
+                        estimated_delivery_date_ground: <dateTime>
+                        account_price: <string>
+                        minimum_order: <string>
+                        minimum_order_fee: <string>
+                      product_images:
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      variant_id: <integer>
+                      product_id: <integer>
+                    adjustments:
+                    - label: <string>
+                      amount: <float>
+                    - label: <string>
+                      amount: <float>
+                    shipments:
+                    - carrier: <string>
+                      is_shipped: <boolean>
+                      is_delivered: <boolean>
+                      has_tracking: <boolean>
+                      shipping_method: <string>
+                      tracking_number: <string>
+                    - carrier: <string>
+                      is_shipped: <boolean>
+                      is_delivered: <boolean>
+                      has_tracking: <boolean>
+                      shipping_method: <string>
+                      tracking_number: <string>
+                    payments:
+                    - type: <string>
+                      amount: <float>
+                    - type: <string>
+                      amount: <float>
+                  expires_at: <string>
+                  customer_reference: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/reseller_customer_sessions/:reseller_customer_session_id
+    delete:
+      operationId: cancelResellerCustomerSession
+      summary: Cancels Reseller Customer Session Intent
+      tags:
+      - Reseller Customer Sessions
+      description: Returns new order status or user status depending on intent. For NEW_ORDER intent sessions, this request will attempt to cancel an order that was submitted or return an error if unable to cancel. Use a Generic JWT token (no customer reference).
+      parameters:
+      - name: reseller_customer_session_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Delete Reseller Customer Session Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reseller_customer_session:
+                    type: object
+                    properties:
+                      intent:
+                        type: string
+                        examples:
+                        - user_setup
+                      id:
+                        type: string
+                      redirect_url:
+                        type: string
+                      resolution:
+                        type: string
+                        examples:
+                        - pending
+                      order:
+                        type: object
+                        properties:
+                          number:
+                            type: string
+                          state:
+                            type: string
+                            examples:
+                            - returned
+                          total:
+                            type: string
+                          items_total:
+                            type: string
+                          po_number:
+                            type: string
+                          customer_reference:
+                            type: string
+                          user_id:
+                            type: string
+                          shipping_method_name:
+                            type: string
+                          shipping_method_id:
+                            type: string
+                          shipping_carrier_type:
+                            type: string
+                          shipping_address:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              first_name:
+                                type: string
+                              last_name:
+                                type: string
+                              country_id:
+                                type: integer
+                              country_iso:
+                                type: string
+                              address1:
+                                type: string
+                              state_id:
+                                type: integer
+                              state_name:
+                                type: string
+                              city_name:
+                                type: string
+                              zipcode:
+                                type: string
+                              phone:
+                                type: string
+                              address_type:
+                                type: string
+                                examples:
+                                - residential
+                              address2:
+                                type: string
+                              company:
+                                type: string
+                              is_default:
+                                type: boolean
+                          billing_address:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              first_name:
+                                type: string
+                              last_name:
+                                type: string
+                              country_id:
+                                type: integer
+                              country_iso:
+                                type: string
+                              address1:
+                                type: string
+                              state_id:
+                                type: integer
+                              state_name:
+                                type: string
+                              city_name:
+                                type: string
+                              zipcode:
+                                type: string
+                              phone:
+                                type: string
+                              address_type:
+                                type: string
+                                examples:
+                                - residential
+                              address2:
+                                type: string
+                              company:
+                                type: string
+                              is_default:
+                                type: boolean
+                          completed_at:
+                            type: string
+                          url:
+                            type: string
+                          line_items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                quantity:
+                                  type: integer
+                                amount:
+                                  type: number
+                                  format: float
+                                manufacturer:
+                                  type: string
+                                part_number:
+                                  type: string
+                                pack_qty:
+                                  type: number
+                                variant:
+                                  type: object
+                                  properties:
+                                    variant_id:
+                                      type: integer
+                                    price:
+                                      type: string
+                                    quantity:
+                                      type: integer
+                                    pack_quantity:
+                                      type: integer
+                                    minimum:
+                                      type: integer
+                                    verified:
+                                      type: boolean
+                                    location:
+                                      type: string
+                                    timezone:
+                                      type: string
+                                    cutoff:
+                                      type: string
+                                      format: date-time
+                                    past_cutoff:
+                                      type: boolean
+                                    core_price:
+                                      type: string
+                                    estimated_business_days_to_ship:
+                                      type: integer
+                                    estimated_ship_date:
+                                      type: string
+                                      format: date-time
+                                    estimated_days_to_deliver:
+                                      type: integer
+                                    estimated_delivery_date_ground:
+                                      type: string
+                                      format: date-time
+                                    account_price:
+                                      type: string
+                                    minimum_order:
+                                      type: string
+                                    minimum_order_fee:
+                                      type: string
+                                product_images:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      product:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      large:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      small:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      medium:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                variant_id:
+                                  type: integer
+                                product_id:
+                                  type: integer
+                          adjustments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                label:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: float
+                          shipments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                carrier:
+                                  type: string
+                                is_shipped:
+                                  type: boolean
+                                is_delivered:
+                                  type: boolean
+                                has_tracking:
+                                  type: boolean
+                                shipping_method:
+                                  type: string
+                                tracking_number:
+                                  type: string
+                          payments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: float
+                      expires_at:
+                        type: string
+                      customer_reference:
+                        type: string
+                  errno:
+                    type: integer
+              example:
+                reseller_customer_session:
+                  intent: user_setup
+                  id: <string>
+                  redirect_url: <string>
+                  resolution: pending
+                  order:
+                    number: <string>
+                    state: returned
+                    total: <string>
+                    items_total: <string>
+                    po_number: <string>
+                    customer_reference: <string>
+                    user_id: <string>
+                    shipping_method_name: <string>
+                    shipping_method_id: <string>
+                    shipping_carrier_type: <string>
+                    shipping_address:
+                      id: <integer>
+                      first_name: <string>
+                      last_name: <string>
+                      country_id: <integer>
+                      country_iso: <string>
+                      address1: <string>
+                      state_id: <integer>
+                      state_name: <string>
+                      city_name: <string>
+                      zipcode: <string>
+                      phone: <string>
+                      address_type: residential
+                      address2: <string>
+                      company: <string>
+                      is_default: <boolean>
+                    billing_address:
+                      id: <integer>
+                      first_name: <string>
+                      last_name: <string>
+                      country_id: <integer>
+                      country_iso: <string>
+                      address1: <string>
+                      state_id: <integer>
+                      state_name: <string>
+                      city_name: <string>
+                      zipcode: <string>
+                      phone: <string>
+                      address_type: residential
+                      address2: <string>
+                      company: <string>
+                      is_default: <boolean>
+                    completed_at: <string>
+                    url: <string>
+                    line_items:
+                    - id: <integer>
+                      quantity: <integer>
+                      amount: <float>
+                      manufacturer: <string>
+                      part_number: <string>
+                      pack_qty: <number>
+                      variant:
+                        variant_id: <integer>
+                        price: <string>
+                        quantity: <integer>
+                        pack_quantity: <integer>
+                        minimum: <integer>
+                        verified: <boolean>
+                        location: <string>
+                        timezone: <string>
+                        cutoff: <dateTime>
+                        past_cutoff: <boolean>
+                        core_price: <string>
+                        estimated_business_days_to_ship: <integer>
+                        estimated_ship_date: <dateTime>
+                        estimated_days_to_deliver: <integer>
+                        estimated_delivery_date_ground: <dateTime>
+                        account_price: <string>
+                        minimum_order: <string>
+                        minimum_order_fee: <string>
+                      product_images:
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      variant_id: <integer>
+                      product_id: <integer>
+                    - id: <integer>
+                      quantity: <integer>
+                      amount: <float>
+                      manufacturer: <string>
+                      part_number: <string>
+                      pack_qty: <number>
+                      variant:
+                        variant_id: <integer>
+                        price: <string>
+                        quantity: <integer>
+                        pack_quantity: <integer>
+                        minimum: <integer>
+                        verified: <boolean>
+                        location: <string>
+                        timezone: <string>
+                        cutoff: <dateTime>
+                        past_cutoff: <boolean>
+                        core_price: <string>
+                        estimated_business_days_to_ship: <integer>
+                        estimated_ship_date: <dateTime>
+                        estimated_days_to_deliver: <integer>
+                        estimated_delivery_date_ground: <dateTime>
+                        account_price: <string>
+                        minimum_order: <string>
+                        minimum_order_fee: <string>
+                      product_images:
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      variant_id: <integer>
+                      product_id: <integer>
+                    adjustments:
+                    - label: <string>
+                      amount: <float>
+                    - label: <string>
+                      amount: <float>
+                    shipments:
+                    - carrier: <string>
+                      is_shipped: <boolean>
+                      is_delivered: <boolean>
+                      has_tracking: <boolean>
+                      shipping_method: <string>
+                      tracking_number: <string>
+                    - carrier: <string>
+                      is_shipped: <boolean>
+                      is_delivered: <boolean>
+                      has_tracking: <boolean>
+                      shipping_method: <string>
+                      tracking_number: <string>
+                    payments:
+                    - type: <string>
+                      amount: <float>
+                    - type: <string>
+                      amount: <float>
+                  expires_at: <string>
+                  customer_reference: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/reseller_customer_sessions/:reseller_customer_session_id
+  /reseller_customer_sessions:
+    post:
+      operationId: createResellerCustomerSession
+      summary: Create Reseller Customer Session
+      tags:
+      - Reseller Customer Sessions
+      description: "Creates a new Reseller Customer Session with intent of USER_SETUP or NEW_ORDER.\n\nReturns session details including redirect_url for embedding or redirecting.\n\nWorkflow\nEach Reseller Customer Session is generated on behalf of a \"Customer Reference\". A Customer Reference should be a unique handle to your customer which will then be linked to a FinditParts account. Common identifiers could be a user ID or an email. This is the reference you will use in the future to place orders on behalf of the linked FinditParts user from a USER_SETUP session.\n\nEach session has an intent of either USER_SETUP or NEW_ORDER.  You must complete a USER_SETUP session for each Customer Reference before performing a NEW_ORDER session.\n\nUpon creation, a session will return a finditparts.com URL that should be embedded in an iframe on your site or redirected to for the customer to complete USER_SETUP or a NEW_ORDER.\n\nThe USER_SETUP session will prompt the user to create a FinditParts account along with payment details and shipping address or login to an existing FinditParts account. You may re-run a USER_SETUP session on a previously setup Customer Reference to modify payment details or shipping addresses.\n\nThe NEW_ORDER session will prompt the user with an order summary including final cost and confirmation of payment and shipping details.\n\nJWT Payload for creating Reseller Customer Session\n\nEach JWT to create a Reseller Customer Session must include the subject header sub which should specify the Customer Reference.\nEach JWT to create a Reseller Customer Session must include a data payload matching one of following formats depending on intent of the session being created:\n\nUSER_SETUP Session\nTo link and setup a customer reference you provide to a new or existing FinditParts user, you can create a USER_SETUP session by providing a data payload in the JWT of the following format:\n\nExample JWT payload:\n\nJWT.sign({\n  sub: \"CUSTOMER_123\",\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n  data: {\n    intent: \"USER_SETUP\",\n    user: {\n      firstname: '...',\n      lastname: '...',\n      email: '...',\n      company: '...',\n      address: {\n        address1: '...',\n        address2: '...',\n        city: 'Los Angeles',\n        zipcode: '90000',\n        state: 'CA',\n        phone: '555-555-5555',\n        country: 'USA',\n      }, // Address to prefill\n    }, // Optional to prefill form\n    redirect_url: \"https://acmecorp.com/finditparts_setup_success\", // Optional to redirect upon completion, otherwise will postMessage\n  }\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\"\nIf redirect_url is provided, the following query parameters will be provided upon completion:\n\nSuccess will include resolution=SUCCESS&customer_reference=XXX&reseller_customer_session_id=XXX\nFailure will include resolution=FAILED&reason=XXX&customer_reference=XXX&reseller_customer_session_id=XXX\n\nNEW_ORDER Session\nTo place a new order on behalf of a previously setup Customer Reference, you can create a NEW_ORDER session by providing a data payload in the JWT of the following format:\n\nExample JWT payload:\n\nJWT.sign({\n  sub: \"CUSTOMER_123\",\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n  data: {\n    intent: \"NEW_ORDER\",\n    line_items: [\n      // Can specify line items by a finditparts_product_id, specific variant_id, or part_number and manufacturer\n      {\n        finditparts_product_id: \"<FinditParts product ID>\",\n        quantity: <integer>,\n      },\n      {\n        variant_id: \"<specific variant ID from Product Search>\",\n        quantity: <integer>,\n      },\n      {\n        part_number: \"<part number>\",\n        manufacturer: \"<name of manufacturer to assist product identification>\",\n        quantity: <integer>,\n      },\n      ...\n    ],\n    default_shipping_address: \"123 Main St, Los Angeles, CA, 90000\", # Default shipping address to select on the new order. Must match an address already added to the account. Match is performed by numerical address and zipcode.\n    default_shipping_method: \"29\", # Shipping Method identifiers can be found via `/shipping_methods` API call for a given set of `line_items`\n    redirect_url: \"https://acmecorp.com/finditparts_setup_success\", // Optional to redirect upon completion, otherwise will postMessage\n  }\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\"\nIf redirect_url is provided, the following query parameters will be provided upon completion:\n\nSuccess will include resolution=SUCCESS&customer_reference=XXX&reseller_customer_session_id=XXX\nFailure will include resolution=FAILURE/CANCELLED&customer_reference=XXX&reseller_customer_session_id=XXX\n\nIf no redirect_url is provided (iframe implementation), the following will postMessage to the parent iframe upon completion:\n\nError:\n{\n  error: true,\n  message: String\n}\n\nSuccess:\n{\n  error: false,\n  intent: String,\n  resolution: String,\n  reseller_customer_session_id: String,\n  customer_reference: String,\n}"
+      responses:
+        '200':
+          description: 'Create Reseller Customer Session:'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reseller_customer_session:
+                    type: object
+                    properties:
+                      intent:
+                        type: string
+                        examples:
+                        - user_setup
+                      id:
+                        type: string
+                      redirect_url:
+                        type: string
+                      resolution:
+                        type: string
+                        examples:
+                        - pending
+                      order:
+                        type: object
+                        properties:
+                          number:
+                            type: string
+                          state:
+                            type: string
+                            examples:
+                            - returned
+                          total:
+                            type: string
+                          items_total:
+                            type: string
+                          po_number:
+                            type: string
+                          customer_reference:
+                            type: string
+                          user_id:
+                            type: string
+                          shipping_method_name:
+                            type: string
+                          shipping_method_id:
+                            type: string
+                          shipping_carrier_type:
+                            type: string
+                          shipping_address:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              first_name:
+                                type: string
+                              last_name:
+                                type: string
+                              country_id:
+                                type: integer
+                              country_iso:
+                                type: string
+                              address1:
+                                type: string
+                              state_id:
+                                type: integer
+                              state_name:
+                                type: string
+                              city_name:
+                                type: string
+                              zipcode:
+                                type: string
+                              phone:
+                                type: string
+                              address_type:
+                                type: string
+                                examples:
+                                - residential
+                              address2:
+                                type: string
+                              company:
+                                type: string
+                              is_default:
+                                type: boolean
+                          billing_address:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                              first_name:
+                                type: string
+                              last_name:
+                                type: string
+                              country_id:
+                                type: integer
+                              country_iso:
+                                type: string
+                              address1:
+                                type: string
+                              state_id:
+                                type: integer
+                              state_name:
+                                type: string
+                              city_name:
+                                type: string
+                              zipcode:
+                                type: string
+                              phone:
+                                type: string
+                              address_type:
+                                type: string
+                                examples:
+                                - residential
+                              address2:
+                                type: string
+                              company:
+                                type: string
+                              is_default:
+                                type: boolean
+                          completed_at:
+                            type: string
+                          url:
+                            type: string
+                          line_items:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                quantity:
+                                  type: integer
+                                amount:
+                                  type: number
+                                  format: float
+                                manufacturer:
+                                  type: string
+                                part_number:
+                                  type: string
+                                pack_qty:
+                                  type: number
+                                variant:
+                                  type: object
+                                  properties:
+                                    variant_id:
+                                      type: integer
+                                    price:
+                                      type: string
+                                    quantity:
+                                      type: integer
+                                    pack_quantity:
+                                      type: integer
+                                    minimum:
+                                      type: integer
+                                    verified:
+                                      type: boolean
+                                    location:
+                                      type: string
+                                    timezone:
+                                      type: string
+                                    cutoff:
+                                      type: string
+                                      format: date-time
+                                    past_cutoff:
+                                      type: boolean
+                                    core_price:
+                                      type: string
+                                    estimated_business_days_to_ship:
+                                      type: integer
+                                    estimated_ship_date:
+                                      type: string
+                                      format: date-time
+                                    estimated_days_to_deliver:
+                                      type: integer
+                                    estimated_delivery_date_ground:
+                                      type: string
+                                      format: date-time
+                                    account_price:
+                                      type: string
+                                    minimum_order:
+                                      type: string
+                                    minimum_order_fee:
+                                      type: string
+                                product_images:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      product:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      large:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      small:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                      medium:
+                                        type: object
+                                        properties:
+                                          jpeg:
+                                            type: string
+                                          webp:
+                                            type: string
+                                variant_id:
+                                  type: integer
+                                product_id:
+                                  type: integer
+                          adjustments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                label:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: float
+                          shipments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                carrier:
+                                  type: string
+                                is_shipped:
+                                  type: boolean
+                                is_delivered:
+                                  type: boolean
+                                has_tracking:
+                                  type: boolean
+                                shipping_method:
+                                  type: string
+                                tracking_number:
+                                  type: string
+                          payments:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                amount:
+                                  type: number
+                                  format: float
+                      expires_at:
+                        type: string
+                      customer_reference:
+                        type: string
+                  errno:
+                    type: integer
+              example:
+                reseller_customer_session:
+                  intent: user_setup
+                  id: <string>
+                  redirect_url: <string>
+                  resolution: pending
+                  order:
+                    number: <string>
+                    state: returned
+                    total: <string>
+                    items_total: <string>
+                    po_number: <string>
+                    customer_reference: <string>
+                    user_id: <string>
+                    shipping_method_name: <string>
+                    shipping_method_id: <string>
+                    shipping_carrier_type: <string>
+                    shipping_address:
+                      id: <integer>
+                      first_name: <string>
+                      last_name: <string>
+                      country_id: <integer>
+                      country_iso: <string>
+                      address1: <string>
+                      state_id: <integer>
+                      state_name: <string>
+                      city_name: <string>
+                      zipcode: <string>
+                      phone: <string>
+                      address_type: residential
+                      address2: <string>
+                      company: <string>
+                      is_default: <boolean>
+                    billing_address:
+                      id: <integer>
+                      first_name: <string>
+                      last_name: <string>
+                      country_id: <integer>
+                      country_iso: <string>
+                      address1: <string>
+                      state_id: <integer>
+                      state_name: <string>
+                      city_name: <string>
+                      zipcode: <string>
+                      phone: <string>
+                      address_type: residential
+                      address2: <string>
+                      company: <string>
+                      is_default: <boolean>
+                    completed_at: <string>
+                    url: <string>
+                    line_items:
+                    - id: <integer>
+                      quantity: <integer>
+                      amount: <float>
+                      manufacturer: <string>
+                      part_number: <string>
+                      pack_qty: <number>
+                      variant:
+                        variant_id: <integer>
+                        price: <string>
+                        quantity: <integer>
+                        pack_quantity: <integer>
+                        minimum: <integer>
+                        verified: <boolean>
+                        location: <string>
+                        timezone: <string>
+                        cutoff: <dateTime>
+                        past_cutoff: <boolean>
+                        core_price: <string>
+                        estimated_business_days_to_ship: <integer>
+                        estimated_ship_date: <dateTime>
+                        estimated_days_to_deliver: <integer>
+                        estimated_delivery_date_ground: <dateTime>
+                        account_price: <string>
+                        minimum_order: <string>
+                        minimum_order_fee: <string>
+                      product_images:
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      variant_id: <integer>
+                      product_id: <integer>
+                    - id: <integer>
+                      quantity: <integer>
+                      amount: <float>
+                      manufacturer: <string>
+                      part_number: <string>
+                      pack_qty: <number>
+                      variant:
+                        variant_id: <integer>
+                        price: <string>
+                        quantity: <integer>
+                        pack_quantity: <integer>
+                        minimum: <integer>
+                        verified: <boolean>
+                        location: <string>
+                        timezone: <string>
+                        cutoff: <dateTime>
+                        past_cutoff: <boolean>
+                        core_price: <string>
+                        estimated_business_days_to_ship: <integer>
+                        estimated_ship_date: <dateTime>
+                        estimated_days_to_deliver: <integer>
+                        estimated_delivery_date_ground: <dateTime>
+                        account_price: <string>
+                        minimum_order: <string>
+                        minimum_order_fee: <string>
+                      product_images:
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      - product:
+                          jpeg: <string>
+                          webp: <string>
+                        large:
+                          jpeg: <string>
+                          webp: <string>
+                        small:
+                          jpeg: <string>
+                          webp: <string>
+                        medium:
+                          jpeg: <string>
+                          webp: <string>
+                      variant_id: <integer>
+                      product_id: <integer>
+                    adjustments:
+                    - label: <string>
+                      amount: <float>
+                    - label: <string>
+                      amount: <float>
+                    shipments:
+                    - carrier: <string>
+                      is_shipped: <boolean>
+                      is_delivered: <boolean>
+                      has_tracking: <boolean>
+                      shipping_method: <string>
+                      tracking_number: <string>
+                    - carrier: <string>
+                      is_shipped: <boolean>
+                      is_delivered: <boolean>
+                      has_tracking: <boolean>
+                      shipping_method: <string>
+                      tracking_number: <string>
+                    payments:
+                    - type: <string>
+                      amount: <float>
+                    - type: <string>
+                      amount: <float>
+                  expires_at: <string>
+                  customer_reference: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/reseller_customer_sessions
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'

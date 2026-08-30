@@ -1,0 +1,343 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Partners API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Partners
+  description: Partner API-key surface for white-label shipping quotes and order placement.
+paths:
+  /partners/shipping_methods:
+    post:
+      operationId: partnersShippingMethods
+      summary: Partners Shipping Methods
+      tags:
+      - Partners
+      description: 'Returns a list of the partners shipping methods and estimated costs for a given order and address.
+
+
+        Requires a Partner API key in the Authorization header.'
+      parameters:
+      - name: line_items
+        in: query
+        required: false
+        description: Repeated object-valued parameter. FinditParts documents the encoding as Rails bracket form, e.g. line_items[][variant_id]=123&line_items[][quantity]=1 — or line_items[][finditparts_product_id]=456&line_items[][quantity]=1. May also be supplied inside the JWT data payload instead.
+        schema:
+          type: array
+          items:
+            type: object
+        x-encoding: rails-bracket
+      - name: zipcode
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address1
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address2
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: country
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address_type
+        in: query
+        required: false
+        schema:
+          type: string
+          examples:
+          - commercial
+      responses:
+        '200':
+          description: Partners Shipping Methods Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_methods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                        amount:
+                          type: number
+                          format: float
+                        identifier:
+                          type: string
+                        currency:
+                          type: string
+                        carrier_type:
+                          type: string
+                          examples:
+                          - ups
+                        detail:
+                          type: string
+                        days_to_deliver:
+                          type: integer
+                        estimated_delivery_date:
+                          type: string
+                        available:
+                          type: boolean
+                        url:
+                          type: string
+                        manufacturer:
+                          type: string
+                  errno:
+                    type: integer
+              example:
+                shipping_methods:
+                - id: <integer>
+                  label: <string>
+                  amount: <float>
+                  identifier: <string>
+                  currency: <string>
+                  carrier_type: ups
+                  detail: <string>
+                  days_to_deliver: <integer>
+                  estimated_delivery_date: <string>
+                  available: <boolean>
+                  url: <string>
+                  manufacturer: <string>
+                - id: <integer>
+                  label: <string>
+                  amount: <float>
+                  identifier: <string>
+                  currency: <string>
+                  carrier_type: ups
+                  detail: <string>
+                  days_to_deliver: <integer>
+                  estimated_delivery_date: <string>
+                  available: <boolean>
+                  url: <string>
+                  manufacturer: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/partners/shipping_methods?line_items=[object Object]&line_items=[object Object]&zipcode=<string>&address1=<string>&address2=<string>&state=<string>&city=<string>&country=<string>&address_type=commercial
+  /partners/place_order:
+    post:
+      operationId: partnersPlaceOrder
+      summary: Partners Place Order
+      tags:
+      - Partners
+      description: 'Places a partner order.
+
+
+        Requires a Partner API key in the Authorization header.'
+      parameters:
+      - name: line_items
+        in: query
+        required: false
+        description: Repeated object-valued parameter. FinditParts documents the encoding as Rails bracket form, e.g. line_items[][variant_id]=123&line_items[][quantity]=1 — or line_items[][finditparts_product_id]=456&line_items[][quantity]=1. May also be supplied inside the JWT data payload instead.
+        schema:
+          type: array
+          items:
+            type: object
+        x-encoding: rails-bracket
+      - name: customer_reference
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: shipping_method_id
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: po_number
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: partner_shipping_price
+        in: query
+        required: false
+        schema:
+          type: number
+          format: float
+      - name: zipcode
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address1
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address2
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: country
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address_type
+        in: query
+        required: false
+        schema:
+          type: string
+          examples:
+          - commercial
+      responses:
+        '200':
+          description: Partners Place Order Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_methods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                        amount:
+                          type: number
+                          format: float
+                        identifier:
+                          type: string
+                        currency:
+                          type: string
+                        carrier_type:
+                          type: string
+                          examples:
+                          - ups
+                        detail:
+                          type: string
+                        days_to_deliver:
+                          type: integer
+                        estimated_delivery_date:
+                          type: string
+                        available:
+                          type: boolean
+                        url:
+                          type: string
+                        manufacturer:
+                          type: string
+                  errno:
+                    type: integer
+              example:
+                shipping_methods:
+                - id: <integer>
+                  label: <string>
+                  amount: <float>
+                  identifier: <string>
+                  currency: <string>
+                  carrier_type: ups
+                  detail: <string>
+                  days_to_deliver: <integer>
+                  estimated_delivery_date: <string>
+                  available: <boolean>
+                  url: <string>
+                  manufacturer: <string>
+                - id: <integer>
+                  label: <string>
+                  amount: <float>
+                  identifier: <string>
+                  currency: <string>
+                  carrier_type: ups
+                  detail: <string>
+                  days_to_deliver: <integer>
+                  estimated_delivery_date: <string>
+                  available: <boolean>
+                  url: <string>
+                  manufacturer: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/partners/place_order?line_items=[object Object]&line_items=[object Object]&customer_reference=<string>&shipping_method_id=<integer>&po_number=<string>&partner_shipping_price=<float>&zipcode=<string>&address1=<string>&address2=<string>&state=<string>&city=<string>&country=<string>&address_type=commercial
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'

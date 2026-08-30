@@ -1,0 +1,178 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Shipping API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Shipping
+  description: Shipping method quoting and estimated cost for a proposed set of line items and an address.
+paths:
+  /shipping_methods:
+    get:
+      operationId: shippingMethods
+      summary: Shipping Methods
+      tags:
+      - Shipping
+      description: "Returns a list of shipping methods and estimated costs for a given order and address.\n\nThis API can be accessed using a JWT or an API key.\n\nAPI Key Authentication\nRequires an API Key in the Authorization header.\n\nParameters line_items and address should be sent as query parameters if using API Key Authentication.\n\nExample API Key Request\nSingle variant:\nGET /api/v1/shipping_methods.json?line_items[][variant_id]=123&line_items[][quantity]=1&address[zipcode]=93101\n\nMultiple variants via product_id:\nGET /api/v1/shipping_methods.json?line_items[][finditparts_product_id]=456&line_items[][quantity]=1&line_items[][finditparts_product_id]=123&line_items[][quantity]=1&address[zipcode]=93101\n\nJWT Authentication\nRequires a JWT in the Authorization header and optionally on behalf of a 'Customer Reference' (as the JWT sub)\n\nJWT Payload for fetching shipping methods\n\nEach JWT to fetch shipping methods must include the subject header sub which should specify the Customer Reference.\nEach JWT to fetch shipping methods may include a data payload matching the following format (as an alternative to specifying the data in query parameters):\n\nExample JWT payload:\n\nJWT.sign({\n  sub: \"CUSTOMER_123\",\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n  data: {\n    intent: \"SHIPPING_METHODS\",\n    line_items: [{ variant_id: '...', quantity: '...' }], // Line items in the proposed order. See NEW_ORDER for format of `line_items`\n    address: {\n      address1: '...',\n      address2: '...',\n      city: 'Los Angeles',\n      state: 'CA',\n      zipcode: '90000',\n      country: 'USA',\n      address_type: \"commercial\" || \"residential\"\n    }, // Address to use for estimate\n  }\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\""
+      parameters:
+      - name: line_items
+        in: query
+        required: false
+        description: Repeated object-valued parameter. FinditParts documents the encoding as Rails bracket form, e.g. line_items[][variant_id]=123&line_items[][quantity]=1 — or line_items[][finditparts_product_id]=456&line_items[][quantity]=1. May also be supplied inside the JWT data payload instead.
+        schema:
+          type: array
+          items:
+            type: object
+        x-encoding: rails-bracket
+      - name: zipcode
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address1
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address2
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: state
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: country
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: address_type
+        in: query
+        required: false
+        schema:
+          type: string
+          examples:
+          - commercial
+      responses:
+        '200':
+          description: 'Shipping Methods Response: A list of available shippping methods and cost'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shipping_methods:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        label:
+                          type: string
+                        amount:
+                          type: number
+                          format: float
+                        identifier:
+                          type: string
+                        currency:
+                          type: string
+                        carrier_type:
+                          type: string
+                          examples:
+                          - ups
+                        detail:
+                          type: string
+                        days_to_deliver:
+                          type: integer
+                        estimated_delivery_date:
+                          type: string
+                        available:
+                          type: boolean
+                        url:
+                          type: string
+                        manufacturer:
+                          type: string
+                  errno:
+                    type: integer
+              example:
+                shipping_methods:
+                - id: <integer>
+                  label: <string>
+                  amount: <float>
+                  identifier: <string>
+                  currency: <string>
+                  carrier_type: ups
+                  detail: <string>
+                  days_to_deliver: <integer>
+                  estimated_delivery_date: <string>
+                  available: <boolean>
+                  url: <string>
+                  manufacturer: <string>
+                - id: <integer>
+                  label: <string>
+                  amount: <float>
+                  identifier: <string>
+                  currency: <string>
+                  carrier_type: ups
+                  detail: <string>
+                  days_to_deliver: <integer>
+                  estimated_delivery_date: <string>
+                  available: <boolean>
+                  url: <string>
+                  manufacturer: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/shipping_methods?line_items=[object Object]&line_items=[object Object]&zipcode=<string>&address1=<string>&address2=<string>&state=<string>&city=<string>&country=<string>&address_type=commercial
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'

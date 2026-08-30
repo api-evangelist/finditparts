@@ -1,0 +1,2742 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Products API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Products
+  description: Part search, part-number lookup and product/variant detail across the FinditParts catalog.
+paths:
+  /products/{product_id}:
+    get:
+      operationId: getProduct
+      summary: Product Details
+      tags:
+      - Products
+      description: 'Returns the Product Details
+
+
+        Requires a generic JWT in the Authorization header.
+
+
+        Use a customer referenced JWT to return account specific pricing or a Generic JWT token (no customer reference) to return list price.'
+      parameters:
+      - name: include_pies_data
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: product_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Product Details Response: Details for a given Product'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      manufacturer:
+                        type: string
+                      part_number:
+                        type: string
+                      short_description:
+                        type: string
+                      long_description:
+                        type: string
+                      sellable:
+                        type: boolean
+                      product_url:
+                        type: string
+                      product_images:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            product:
+                              type: object
+                              properties:
+                                jpeg:
+                                  type: string
+                                webp:
+                                  type: string
+                            large:
+                              type: object
+                              properties:
+                                jpeg:
+                                  type: string
+                                webp:
+                                  type: string
+                            small:
+                              type: object
+                              properties:
+                                jpeg:
+                                  type: string
+                                webp:
+                                  type: string
+                            medium:
+                              type: object
+                              properties:
+                                jpeg:
+                                  type: string
+                                webp:
+                                  type: string
+                      condition:
+                        type: string
+                      breadcrumb_ancestors:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          permalink:
+                            type: string
+                          is_hidden:
+                            type: boolean
+                      current_variant:
+                        type: object
+                        properties:
+                          variant_id:
+                            type: integer
+                          price:
+                            type: string
+                          quantity:
+                            type: integer
+                          pack_quantity:
+                            type: integer
+                          minimum:
+                            type: integer
+                          verified:
+                            type: boolean
+                          location:
+                            type: string
+                          timezone:
+                            type: string
+                          cutoff:
+                            type: string
+                            format: date-time
+                          past_cutoff:
+                            type: boolean
+                          core_price:
+                            type: string
+                          estimated_business_days_to_ship:
+                            type: integer
+                          estimated_ship_date:
+                            type: string
+                            format: date-time
+                          estimated_days_to_deliver:
+                            type: integer
+                          estimated_delivery_date_ground:
+                            type: string
+                            format: date-time
+                          account_price:
+                            type: string
+                          minimum_order:
+                            type: string
+                          minimum_order_fee:
+                            type: string
+                      preferred_variant_id:
+                        type: integer
+                      variants:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            variant_id:
+                              type: integer
+                            price:
+                              type: string
+                            quantity:
+                              type: integer
+                            pack_quantity:
+                              type: integer
+                            minimum:
+                              type: integer
+                            verified:
+                              type: boolean
+                            location:
+                              type: string
+                            timezone:
+                              type: string
+                            cutoff:
+                              type: string
+                              format: date-time
+                            past_cutoff:
+                              type: boolean
+                            core_price:
+                              type: string
+                            estimated_business_days_to_ship:
+                              type: integer
+                            estimated_ship_date:
+                              type: string
+                              format: date-time
+                            estimated_days_to_deliver:
+                              type: integer
+                            estimated_delivery_date_ground:
+                              type: string
+                              format: date-time
+                            account_price:
+                              type: string
+                            minimum_order:
+                              type: string
+                            minimum_order_fee:
+                              type: string
+                      recommendations_url:
+                        type: string
+                      product_review_count:
+                        type: integer
+                      product_review_rating:
+                        type: number
+                        format: float
+                      manufacturer_image:
+                        type: string
+                      msrp:
+                        type: number
+                        format: float
+                      purchase_notes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              examples:
+                              - SPECIAL_ORDER
+                            html_message:
+                              type: string
+                      product_reviews:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            title:
+                              type: string
+                            rating:
+                              type: integer
+                            summary:
+                              type: string
+                      pies_data:
+                        type: object
+                        properties:
+                          descriptions:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                title:
+                                  type: string
+                                description_code:
+                                  type: string
+                                value:
+                                  type: string
+                                language_code:
+                                  type: string
+                                sequence:
+                                  type: integer
+                          part_interchanges:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                brand_label:
+                                  type: string
+                                part_number:
+                                  type: string
+                                brand_aaiaid:
+                                  type: string
+                          product_attributes:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                value:
+                                  type: string
+                          extended_product_informations:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                description:
+                                  type: string
+                                value:
+                                  type: string
+                                expi_code:
+                                  type: string
+                                language_code:
+                                  type: string
+                  errno:
+                    type: integer
+              example:
+                product:
+                  id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: SPECIAL_ORDER
+                    html_message: <string>
+                  - type: SHIPPING_CUTOFF
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/products/:product_id?include_pies_data=<boolean>
+  /products/{product_ids}/multi:
+    get:
+      operationId: getProductsMulti
+      summary: Product Details Multi
+      tags:
+      - Products
+      description: 'Returns the Product Details for each comma separated ID.
+
+
+        Requires a generic JWT in the Authorization header.
+
+
+        Use a customer referenced JWT to return account specific pricing or a Generic JWT token (no customer reference) to return list price.'
+      parameters:
+      - name: product_ids
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Product Details Multi Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        manufacturer:
+                          type: string
+                        part_number:
+                          type: string
+                        short_description:
+                          type: string
+                        long_description:
+                          type: string
+                        sellable:
+                          type: boolean
+                        product_url:
+                          type: string
+                        product_images:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              large:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              small:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              medium:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                        condition:
+                          type: string
+                        breadcrumb_ancestors:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            permalink:
+                              type: string
+                            is_hidden:
+                              type: boolean
+                        current_variant:
+                          type: object
+                          properties:
+                            variant_id:
+                              type: integer
+                            price:
+                              type: string
+                            quantity:
+                              type: integer
+                            pack_quantity:
+                              type: integer
+                            minimum:
+                              type: integer
+                            verified:
+                              type: boolean
+                            location:
+                              type: string
+                            timezone:
+                              type: string
+                            cutoff:
+                              type: string
+                              format: date-time
+                            past_cutoff:
+                              type: boolean
+                            core_price:
+                              type: string
+                            estimated_business_days_to_ship:
+                              type: integer
+                            estimated_ship_date:
+                              type: string
+                              format: date-time
+                            estimated_days_to_deliver:
+                              type: integer
+                            estimated_delivery_date_ground:
+                              type: string
+                              format: date-time
+                            account_price:
+                              type: string
+                            minimum_order:
+                              type: string
+                            minimum_order_fee:
+                              type: string
+                        preferred_variant_id:
+                          type: integer
+                        variants:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              variant_id:
+                                type: integer
+                              price:
+                                type: string
+                              quantity:
+                                type: integer
+                              pack_quantity:
+                                type: integer
+                              minimum:
+                                type: integer
+                              verified:
+                                type: boolean
+                              location:
+                                type: string
+                              timezone:
+                                type: string
+                              cutoff:
+                                type: string
+                                format: date-time
+                              past_cutoff:
+                                type: boolean
+                              core_price:
+                                type: string
+                              estimated_business_days_to_ship:
+                                type: integer
+                              estimated_ship_date:
+                                type: string
+                                format: date-time
+                              estimated_days_to_deliver:
+                                type: integer
+                              estimated_delivery_date_ground:
+                                type: string
+                                format: date-time
+                              account_price:
+                                type: string
+                              minimum_order:
+                                type: string
+                              minimum_order_fee:
+                                type: string
+                        recommendations_url:
+                          type: string
+                        product_review_count:
+                          type: integer
+                        product_review_rating:
+                          type: number
+                          format: float
+                        manufacturer_image:
+                          type: string
+                        msrp:
+                          type: number
+                          format: float
+                        purchase_notes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                examples:
+                                - SPECIAL_ORDER
+                              html_message:
+                                type: string
+                        product_reviews:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              title:
+                                type: string
+                              rating:
+                                type: integer
+                              summary:
+                                type: string
+                        pies_data:
+                          type: object
+                          properties:
+                            descriptions:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  title:
+                                    type: string
+                                  description_code:
+                                    type: string
+                                  value:
+                                    type: string
+                                  language_code:
+                                    type: string
+                                  sequence:
+                                    type: integer
+                            part_interchanges:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  brand_label:
+                                    type: string
+                                  part_number:
+                                    type: string
+                                  brand_aaiaid:
+                                    type: string
+                            product_attributes:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  value:
+                                    type: string
+                            extended_product_informations:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  description:
+                                    type: string
+                                  value:
+                                    type: string
+                                  expi_code:
+                                    type: string
+                                  language_code:
+                                    type: string
+                  errno:
+                    type: integer
+              example:
+                products:
+                - id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: SPECIAL_ORDER
+                    html_message: <string>
+                  - type: RETURNS
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                - id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: NA_CA
+                    html_message: <string>
+                  - type: SHIPPING_PROMISE
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/products/:product_ids/multi
+  /products/lookup:
+    get:
+      operationId: lookupProductByPartNumber
+      summary: Lookup Product by Part Number
+      tags:
+      - Products
+      description: 'Returns the Product Details for each Product that exactly matches the part number provided. Results are split by part number exact matches and cross reference exact matches.
+
+
+        Requires a generic JWT in the Authorization header.
+
+
+        Use a customer referenced JWT to return account specific pricing or a Generic JWT token (no customer reference) to return list price.'
+      parameters:
+      - name: part_number
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Product Lookup Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  part_number_matches:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        manufacturer:
+                          type: string
+                        part_number:
+                          type: string
+                        short_description:
+                          type: string
+                        long_description:
+                          type: string
+                        sellable:
+                          type: boolean
+                        product_url:
+                          type: string
+                        product_images:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              large:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              small:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              medium:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                        condition:
+                          type: string
+                        breadcrumb_ancestors:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            permalink:
+                              type: string
+                            is_hidden:
+                              type: boolean
+                        current_variant:
+                          type: object
+                          properties:
+                            variant_id:
+                              type: integer
+                            price:
+                              type: string
+                            quantity:
+                              type: integer
+                            pack_quantity:
+                              type: integer
+                            minimum:
+                              type: integer
+                            verified:
+                              type: boolean
+                            location:
+                              type: string
+                            timezone:
+                              type: string
+                            cutoff:
+                              type: string
+                              format: date-time
+                            past_cutoff:
+                              type: boolean
+                            core_price:
+                              type: string
+                            estimated_business_days_to_ship:
+                              type: integer
+                            estimated_ship_date:
+                              type: string
+                              format: date-time
+                            estimated_days_to_deliver:
+                              type: integer
+                            estimated_delivery_date_ground:
+                              type: string
+                              format: date-time
+                            account_price:
+                              type: string
+                            minimum_order:
+                              type: string
+                            minimum_order_fee:
+                              type: string
+                        preferred_variant_id:
+                          type: integer
+                        variants:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              variant_id:
+                                type: integer
+                              price:
+                                type: string
+                              quantity:
+                                type: integer
+                              pack_quantity:
+                                type: integer
+                              minimum:
+                                type: integer
+                              verified:
+                                type: boolean
+                              location:
+                                type: string
+                              timezone:
+                                type: string
+                              cutoff:
+                                type: string
+                                format: date-time
+                              past_cutoff:
+                                type: boolean
+                              core_price:
+                                type: string
+                              estimated_business_days_to_ship:
+                                type: integer
+                              estimated_ship_date:
+                                type: string
+                                format: date-time
+                              estimated_days_to_deliver:
+                                type: integer
+                              estimated_delivery_date_ground:
+                                type: string
+                                format: date-time
+                              account_price:
+                                type: string
+                              minimum_order:
+                                type: string
+                              minimum_order_fee:
+                                type: string
+                        recommendations_url:
+                          type: string
+                        product_review_count:
+                          type: integer
+                        product_review_rating:
+                          type: number
+                          format: float
+                        manufacturer_image:
+                          type: string
+                        msrp:
+                          type: number
+                          format: float
+                        purchase_notes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                examples:
+                                - SHIPPING_MESSAGE
+                              html_message:
+                                type: string
+                        product_reviews:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              title:
+                                type: string
+                              rating:
+                                type: integer
+                              summary:
+                                type: string
+                        pies_data:
+                          type: object
+                          properties:
+                            descriptions:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  title:
+                                    type: string
+                                  description_code:
+                                    type: string
+                                  value:
+                                    type: string
+                                  language_code:
+                                    type: string
+                                  sequence:
+                                    type: integer
+                            part_interchanges:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  brand_label:
+                                    type: string
+                                  part_number:
+                                    type: string
+                                  brand_aaiaid:
+                                    type: string
+                            product_attributes:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  value:
+                                    type: string
+                            extended_product_informations:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  description:
+                                    type: string
+                                  value:
+                                    type: string
+                                  expi_code:
+                                    type: string
+                                  language_code:
+                                    type: string
+                  cross_reference_matches:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        manufacturer:
+                          type: string
+                        part_number:
+                          type: string
+                        short_description:
+                          type: string
+                        long_description:
+                          type: string
+                        sellable:
+                          type: boolean
+                        product_url:
+                          type: string
+                        product_images:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              product:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              large:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              small:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                              medium:
+                                type: object
+                                properties:
+                                  jpeg:
+                                    type: string
+                                  webp:
+                                    type: string
+                        condition:
+                          type: string
+                        breadcrumb_ancestors:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            name:
+                              type: string
+                            permalink:
+                              type: string
+                            is_hidden:
+                              type: boolean
+                        current_variant:
+                          type: object
+                          properties:
+                            variant_id:
+                              type: integer
+                            price:
+                              type: string
+                            quantity:
+                              type: integer
+                            pack_quantity:
+                              type: integer
+                            minimum:
+                              type: integer
+                            verified:
+                              type: boolean
+                            location:
+                              type: string
+                            timezone:
+                              type: string
+                            cutoff:
+                              type: string
+                              format: date-time
+                            past_cutoff:
+                              type: boolean
+                            core_price:
+                              type: string
+                            estimated_business_days_to_ship:
+                              type: integer
+                            estimated_ship_date:
+                              type: string
+                              format: date-time
+                            estimated_days_to_deliver:
+                              type: integer
+                            estimated_delivery_date_ground:
+                              type: string
+                              format: date-time
+                            account_price:
+                              type: string
+                            minimum_order:
+                              type: string
+                            minimum_order_fee:
+                              type: string
+                        preferred_variant_id:
+                          type: integer
+                        variants:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              variant_id:
+                                type: integer
+                              price:
+                                type: string
+                              quantity:
+                                type: integer
+                              pack_quantity:
+                                type: integer
+                              minimum:
+                                type: integer
+                              verified:
+                                type: boolean
+                              location:
+                                type: string
+                              timezone:
+                                type: string
+                              cutoff:
+                                type: string
+                                format: date-time
+                              past_cutoff:
+                                type: boolean
+                              core_price:
+                                type: string
+                              estimated_business_days_to_ship:
+                                type: integer
+                              estimated_ship_date:
+                                type: string
+                                format: date-time
+                              estimated_days_to_deliver:
+                                type: integer
+                              estimated_delivery_date_ground:
+                                type: string
+                                format: date-time
+                              account_price:
+                                type: string
+                              minimum_order:
+                                type: string
+                              minimum_order_fee:
+                                type: string
+                        recommendations_url:
+                          type: string
+                        product_review_count:
+                          type: integer
+                        product_review_rating:
+                          type: number
+                          format: float
+                        manufacturer_image:
+                          type: string
+                        msrp:
+                          type: number
+                          format: float
+                        purchase_notes:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                examples:
+                                - SHIPPING_MESSAGE
+                              html_message:
+                                type: string
+                        product_reviews:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              title:
+                                type: string
+                              rating:
+                                type: integer
+                              summary:
+                                type: string
+                        pies_data:
+                          type: object
+                          properties:
+                            descriptions:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  title:
+                                    type: string
+                                  description_code:
+                                    type: string
+                                  value:
+                                    type: string
+                                  language_code:
+                                    type: string
+                                  sequence:
+                                    type: integer
+                            part_interchanges:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  brand_label:
+                                    type: string
+                                  part_number:
+                                    type: string
+                                  brand_aaiaid:
+                                    type: string
+                            product_attributes:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  name:
+                                    type: string
+                                  value:
+                                    type: string
+                            extended_product_informations:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  description:
+                                    type: string
+                                  value:
+                                    type: string
+                                  expi_code:
+                                    type: string
+                                  language_code:
+                                    type: string
+                  errno:
+                    type: integer
+              example:
+                part_number_matches:
+                - id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: SHIPPING_MESSAGE
+                    html_message: <string>
+                  - type: SHIPPING_MESSAGE
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                - id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: SHIPPING_PROMISE
+                    html_message: <string>
+                  - type: RETURNS
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                cross_reference_matches:
+                - id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: SHIPPING_MESSAGE
+                    html_message: <string>
+                  - type: NA_CA
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                - id: <integer>
+                  manufacturer: <string>
+                  part_number: <string>
+                  short_description: <string>
+                  long_description: <string>
+                  sellable: <boolean>
+                  product_url: <string>
+                  product_images:
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  - product:
+                      jpeg: <string>
+                      webp: <string>
+                    large:
+                      jpeg: <string>
+                      webp: <string>
+                    small:
+                      jpeg: <string>
+                      webp: <string>
+                    medium:
+                      jpeg: <string>
+                      webp: <string>
+                  condition: <string>
+                  breadcrumb_ancestors:
+                    id: <integer>
+                    name: <string>
+                    permalink: <string>
+                    is_hidden: <boolean>
+                  current_variant:
+                    variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  preferred_variant_id: <integer>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  recommendations_url: <string>
+                  product_review_count: <integer>
+                  product_review_rating: <float>
+                  manufacturer_image: <string>
+                  msrp: <float>
+                  purchase_notes:
+                  - type: NA_CA
+                    html_message: <string>
+                  - type: NA_CA
+                    html_message: <string>
+                  product_reviews:
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  - title: <string>
+                    rating: <integer>
+                    summary: <string>
+                  pies_data:
+                    descriptions:
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    - title: <string>
+                      description_code: <string>
+                      value: <string>
+                      language_code: <string>
+                      sequence: <integer>
+                    part_interchanges:
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    - brand_label: <string>
+                      part_number: <string>
+                      brand_aaiaid: <string>
+                    product_attributes:
+                    - name: <string>
+                      value: <string>
+                    - name: <string>
+                      value: <string>
+                    extended_product_informations:
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                    - description: <string>
+                      value: <string>
+                      expi_code: <string>
+                      language_code: <string>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/products/lookup?part_number=<string>
+  /products:
+    get:
+      operationId: productSearch
+      summary: Product Search
+      tags:
+      - Products
+      description: "Returns a list of products matching part number provided.\n\nOne of part_number or query parameter is required.\n\nRequires a JWT in the Authorization header with intent 'PRODUCT_SEARCH' and on behalf of a 'Customer Reference' (See Workflow section in /reseller_customer_sessions endpoint).\n\nUse a customer referenced JWT with intent PRODUCT_SEARCH to return account specific pricing or a Generic JWT token (no customer reference) to return list price.\n\nToggle between v3 and v2 search with use_v3_search=true\n\nJWT payload for product search\nExample JWT payload (with customer reference sub to return account_price):\n\nJWT.sign({\n  sub: \"CUSTOMER_123\",\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n  data: {\n    intent: \"PRODUCT_SEARCH\",\n  }\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\"\nExample generic JWT payload (no customer reference sub to return generic list price of products):\n\nJWT.sign({\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\""
+      parameters:
+      - name: part_number
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: query
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: order
+        in: query
+        required: false
+        schema:
+          type: string
+          examples:
+          - manufacturer_to_a
+      - name: m
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: strict
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: ioos
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: tags
+        in: query
+        required: false
+        schema:
+          type: string
+          examples:
+          - Top Seller
+      - name: pf
+        in: query
+        required: false
+        schema:
+          type: number
+          format: float
+      - name: pt
+        in: query
+        required: false
+        schema:
+          type: number
+          format: float
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: per
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: pc
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: psc
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: ppt
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: c_d1
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: c_d2
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: c_d3
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: attrs
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: aggs
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: x_core
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: ids
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: use_v3_search
+        in: query
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: 'Product Search Response: A list of matching products'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        finditparts_product_id:
+                          type: integer
+                        url:
+                          type: string
+                        manufacturer:
+                          type: string
+                        part_number:
+                          type: string
+                        id:
+                          type: integer
+                        image:
+                          type: string
+                        image_thumbnail:
+                          type: string
+                        short_description:
+                          type: string
+                        preferred_variant_id:
+                          type: integer
+                        part_number_match_type:
+                          type: string
+                          examples:
+                          - partial
+                        cross_reference_match_type:
+                          type: string
+                          examples:
+                          - full
+                        match_score:
+                          type: number
+                          format: float
+                        match_relative_score:
+                          type: number
+                          format: float
+                        sellable:
+                          type: boolean
+                        variants:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              variant_id:
+                                type: integer
+                              price:
+                                type: string
+                              quantity:
+                                type: integer
+                              pack_quantity:
+                                type: integer
+                              minimum:
+                                type: integer
+                              verified:
+                                type: boolean
+                              location:
+                                type: string
+                              timezone:
+                                type: string
+                              cutoff:
+                                type: string
+                                format: date-time
+                              past_cutoff:
+                                type: boolean
+                              core_price:
+                                type: string
+                              estimated_business_days_to_ship:
+                                type: integer
+                              estimated_ship_date:
+                                type: string
+                                format: date-time
+                              estimated_days_to_deliver:
+                                type: integer
+                              estimated_delivery_date_ground:
+                                type: string
+                                format: date-time
+                              account_price:
+                                type: string
+                              minimum_order:
+                                type: string
+                              minimum_order_fee:
+                                type: string
+                        tags:
+                          type: array
+                          items:
+                            type: string
+                            examples:
+                            - In Stock
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_count:
+                        type: integer
+                  errno:
+                    type: integer
+                  aggs:
+                    type: object
+                    properties:
+                      price_ranges:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+                      manufacturer:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+                      pies_category:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+                      pies_subcategory:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+                      pies_part_terminology:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+                      tags:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+                      pies_attributes:
+                        type: object
+                        properties:
+                          buckets:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                key:
+                                  type: string
+                                doc_count:
+                                  type: number
+                                to:
+                                  type: number
+                                from:
+                                  type: number
+                          doc_count_error_upper_bound:
+                            type: number
+                          sum_other_doc_count:
+                            type: number
+              example:
+                products:
+                - finditparts_product_id: <integer>
+                  url: <string>
+                  manufacturer: <string>
+                  part_number: <string>
+                  id: <integer>
+                  image: <string>
+                  image_thumbnail: <string>
+                  short_description: <string>
+                  preferred_variant_id: <integer>
+                  part_number_match_type: partial
+                  cross_reference_match_type: full
+                  match_score: <float>
+                  match_relative_score: <float>
+                  sellable: <boolean>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  tags:
+                  - In Stock
+                  - Express Shipping
+                - finditparts_product_id: <integer>
+                  url: <string>
+                  manufacturer: <string>
+                  part_number: <string>
+                  id: <integer>
+                  image: <string>
+                  image_thumbnail: <string>
+                  short_description: <string>
+                  preferred_variant_id: <integer>
+                  part_number_match_type: none
+                  cross_reference_match_type: none
+                  match_score: <float>
+                  match_relative_score: <float>
+                  sellable: <boolean>
+                  variants:
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  - variant_id: <integer>
+                    price: <string>
+                    quantity: <integer>
+                    pack_quantity: <integer>
+                    minimum: <integer>
+                    verified: <boolean>
+                    location: <string>
+                    timezone: <string>
+                    cutoff: <dateTime>
+                    past_cutoff: <boolean>
+                    core_price: <string>
+                    estimated_business_days_to_ship: <integer>
+                    estimated_ship_date: <dateTime>
+                    estimated_days_to_deliver: <integer>
+                    estimated_delivery_date_ground: <dateTime>
+                    account_price: <string>
+                    minimum_order: <string>
+                    minimum_order_fee: <string>
+                  tags:
+                  - In Stock
+                  - Top Rated
+                pagination:
+                  current_page: <integer>
+                  per_page: <integer>
+                  total_count: <integer>
+                errno: <integer>
+                aggs:
+                  price_ranges:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+                  manufacturer:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+                  pies_category:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+                  pies_subcategory:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+                  pies_part_terminology:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+                  tags:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+                  pies_attributes:
+                    buckets:
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    - key: <string>
+                      doc_count: <number>
+                      to: <number>
+                      from: <number>
+                    doc_count_error_upper_bound: <number>
+                    sum_other_doc_count: <number>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/products?part_number=<string>&query=<string>&order=manufacturer_to_a&m=<string>&strict=<boolean>&ioos=<boolean>&tags=Top Seller&pf=<float>&pt=<float>&page=<integer>&per=<integer>&pc=<string>&psc=<string>&ppt=<string>&c_d1=<string>&c_d2=<string>&c_d3=<string>&attrs=<string>&aggs=<boolean>&x_core=<boolean>&ids=<string>&ids=<string>&use_v3_search=<boolean>
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'

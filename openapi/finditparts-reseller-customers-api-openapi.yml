@@ -1,0 +1,165 @@
+openapi: 3.2.0
+info:
+  title: FinditParts Reseller Reseller Customers API
+  version: 2.0.1
+  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
+
+
+    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
+
+
+    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  contact:
+    name: FinditParts Support
+    email: support@finditparts.com
+    url: https://www.finditparts.com/developers
+  termsOfService: https://www.finditparts.com/terms-of-use
+  x-generated-by: API Evangelist enrichment pipeline (derived from first-party Postman collection)
+  x-source: postman/finditparts-reseller-api-postman.json
+  x-source-url: https://api-docs.finditparts.com/
+servers:
+- url: https://finditparts.com/api/v1
+  description: Production. This is the baseUrl collection variable published in the FinditParts Reseller API Postman collection; FinditParts documents no separate sandbox host.
+security:
+- resellerJWT: []
+- apiKey: []
+tags:
+- name: Reseller Customers
+  description: Sub-users created on a reseller master account and addressed by customer_reference.
+paths:
+  /reseller_customers:
+    post:
+      operationId: createResellerCustomer
+      summary: Create Reseller Customer
+      tags:
+      - Reseller Customers
+      description: 'Requires a signed JWT on behalf of a Master Account API client in the Authorization header.
+
+
+        Creates a subuser on your master account that can be referenced and acted upon using the customer_reference as the subject sub in the signed JWT used in API calls to endpoints such as /addresses, /carts, etc.'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_reference:
+                  type: string
+            example:
+              customer_reference: <string>
+      responses:
+        '200':
+          description: Create Reseller Customer Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reseller_customer:
+                    type: object
+                    properties:
+                      customer_reference:
+                        type: string
+                      user_id:
+                        type: number
+                  errno:
+                    type: integer
+              example:
+                reseller_customer:
+                  customer_reference: <string>
+                  user_id: <number>
+                errno: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/reseller_customers
+    get:
+      operationId: listResellerCustomers
+      summary: List Reseller Customers
+      tags:
+      - Reseller Customers
+      description: 'Requires a Master Account API key in the Authorization header.
+
+
+        Lists all Reseller Customers created for the master account API key'
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List Reseller Customers Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  reseller_customers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        value:
+                          type: string
+                          examples:
+                          - 'reference #/components/schemas/ResellerCustomers not found in the OpenAPI spec'
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      per_page:
+                        type: integer
+                      total_count:
+                        type: integer
+              example:
+                errno: <integer>
+                reseller_customers:
+                - value: 'reference #/components/schemas/ResellerCustomers not found in the OpenAPI spec'
+                - value: 'reference #/components/schemas/ResellerCustomers not found in the OpenAPI spec'
+                pagination:
+                  current_page: <integer>
+                  per_page: <integer>
+                  total_count: <integer>
+        '500':
+          description: API error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errno:
+                    type: integer
+                  message:
+                    type: string
+              example:
+                errno: <integer>
+                message: <string>
+      x-postman-request: https://finditparts.com/api/v1/reseller_customers?page=<string>
+components:
+  securitySchemes:
+    resellerJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'A short-lived JWT signed with your Reseller Client Secret using HS256. Required claims: iss (your Reseller Client ID) and exp (kept as short as reasonable to prevent replay). Add sub (the Customer Reference) and a data.intent claim (PRODUCT_SEARCH, SHIPPING_METHODS, USER_SETUP, NEW_ORDER) on the endpoints that act on behalf of a specific customer. Presented as: Authorization: Bearer JWT.TOKEN.HERE'
+    apiKey:
+      type: http
+      scheme: bearer
+      description: 'An issued FinditParts API key in the form api-XYZ123, for client-side apps that cannot hold a JWT secret (mobile apps, single-buyer partner applications). Grants the non-user-specific surface (product search, create session, create user); user-specific calls require exchanging user credentials for a user-specific JWT via createSession first. Presented as: Authorization: Bearer api-XYZ123'
