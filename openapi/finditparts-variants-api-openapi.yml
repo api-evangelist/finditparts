@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: FinditParts Reseller Variants API
   version: 2.0.1
-  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
-
-
-    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
-
-
-    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  description: REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts.
   contact:
     name: FinditParts Support
     email: support@finditparts.com
@@ -33,7 +27,50 @@ paths:
       summary: Variant Lookup
       tags:
       - Variants
-      description: "Returns the matching variants by ID\n\nRequires a JWT in the Authorization header with intent 'PRODUCT_SEARCH' and on behalf of a 'Customer Reference' (See Workflow section in /reseller_customer_sessions endpoint).\n\nUse a customer referenced JWT with intent PRODUCT_SEARCH to return account specific pricing or a Generic JWT token (no customer reference) to return list price.\n\nJWT payload for product search\nExample JWT payload (with customer reference sub to return account_price):\n\nJWT.sign({\n  sub: \"CUSTOMER_123\",\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n  data: {\n    intent: \"PRODUCT_SEARCH\",\n  }\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\"\nExample generic JWT payload (no customer reference sub to return generic list price of products):\n\nJWT.sign({\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\""
+      description: 'Returns the matching variants by ID
+
+
+        Requires a JWT in the Authorization header with intent ''PRODUCT_SEARCH'' and on behalf of a ''Customer Reference'' (See Workflow section in /reseller_customer_sessions endpoint).
+
+
+        Use a customer referenced JWT with intent PRODUCT_SEARCH to return account specific pricing or a Generic JWT token (no customer reference) to return list price.
+
+
+        JWT payload for product search
+
+        Example JWT payload (with customer reference sub to return account_price):
+
+
+        JWT.sign({
+
+        sub: "CUSTOMER_123",
+
+        iss: "acme-corp-sandbox",
+
+        exp: 1600903066,
+
+        data: {
+
+        intent: "PRODUCT_SEARCH",
+
+        }
+
+        }, ''RESELLER_CLIENT_SECRET'')
+
+        => "JWT.TOKEN.HERE"
+
+        Example generic JWT payload (no customer reference sub to return generic list price of products):
+
+
+        JWT.sign({
+
+        iss: "acme-corp-sandbox",
+
+        exp: 1600903066,
+
+        }, ''RESELLER_CLIENT_SECRET'')
+
+        => "JWT.TOKEN.HERE"'
       parameters:
       - name: variant_ids
         in: path

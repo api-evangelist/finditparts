@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: FinditParts Reseller Partners API
   version: 2.0.1
-  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
-
-
-    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
-
-
-    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  description: REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts.
   contact:
     name: FinditParts Support
     email: support@finditparts.com

@@ -1,0 +1,40 @@
+{
+  "provider": "finditparts",
+  "sources": [
+    "_original/finditparts-reseller-api-openapi.yml"
+  ],
+  "outputs": [
+    "finditparts-addresses-api-openapi.yml",
+    "finditparts-carts-api-openapi.yml",
+    "finditparts-orders-api-openapi.yml",
+    "finditparts-partners-api-openapi.yml",
+    "finditparts-products-api-openapi.yml",
+    "finditparts-reseller-customer-sessions-api-openapi.yml",
+    "finditparts-reseller-customers-api-openapi.yml",
+    "finditparts-sessions-api-openapi.yml",
+    "finditparts-shipping-api-openapi.yml",
+    "finditparts-users-api-openapi.yml",
+    "finditparts-variants-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "finditparts-reseller-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "finditparts-addresses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-carts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-partners-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-reseller-customer-sessions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-reseller-customers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-sessions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-shipping-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-users-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "finditparts-variants-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

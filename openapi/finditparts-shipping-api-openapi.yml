@@ -2,13 +2,7 @@ openapi: 3.2.0
 info:
   title: FinditParts Reseller Shipping API
   version: 2.0.1
-  description: 'REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts. It covers catalog search and part-number lookup, variant pricing and availability, shipping-method quoting, hosted customer setup and order sessions, cart/checkout, and order history.
-
-
-    DERIVED, NOT PUBLISHED BY THE PROVIDER. FinditParts publishes no OpenAPI document. This spec was mechanically derived by API Evangelist from the first-party public Postman collection "FinditParts Reseller API 2.0.1", published by FinditParts at https://api-docs.finditparts.com/ and saved verbatim in this repo at postman/finditparts-reseller-api-postman.json. Every path, method, parameter, request body, example response and description below is carried over from that collection; nothing was invented. Response schemas are derived from the collection''s example payloads, whose <string>/<integer>/<boolean>/<float> placeholders are Postman''s rendering of the provider''s own declared types. Each operation records its original collection URL template in x-postman-request.
-
-
-    Authentication is a short-lived HS256 JWT signed with the Reseller Client Secret (iss = Reseller Client ID, exp required, sub = Customer Reference when acting on behalf of a customer), or an issued API key of the form api-XYZ123 — both presented as an Authorization: Bearer credential. See authentication/finditparts-authentication.yml.'
+  description: REST surface of the FinditParts Reseller API — the partner/reseller integration for FinditParts, an online marketplace for heavy-duty truck, trailer, fleet and industrial replacement parts.
   contact:
     name: FinditParts Support
     email: support@finditparts.com
@@ -33,7 +27,85 @@ paths:
       summary: Shipping Methods
       tags:
       - Shipping
-      description: "Returns a list of shipping methods and estimated costs for a given order and address.\n\nThis API can be accessed using a JWT or an API key.\n\nAPI Key Authentication\nRequires an API Key in the Authorization header.\n\nParameters line_items and address should be sent as query parameters if using API Key Authentication.\n\nExample API Key Request\nSingle variant:\nGET /api/v1/shipping_methods.json?line_items[][variant_id]=123&line_items[][quantity]=1&address[zipcode]=93101\n\nMultiple variants via product_id:\nGET /api/v1/shipping_methods.json?line_items[][finditparts_product_id]=456&line_items[][quantity]=1&line_items[][finditparts_product_id]=123&line_items[][quantity]=1&address[zipcode]=93101\n\nJWT Authentication\nRequires a JWT in the Authorization header and optionally on behalf of a 'Customer Reference' (as the JWT sub)\n\nJWT Payload for fetching shipping methods\n\nEach JWT to fetch shipping methods must include the subject header sub which should specify the Customer Reference.\nEach JWT to fetch shipping methods may include a data payload matching the following format (as an alternative to specifying the data in query parameters):\n\nExample JWT payload:\n\nJWT.sign({\n  sub: \"CUSTOMER_123\",\n  iss: \"acme-corp-sandbox\",\n  exp: 1600903066,\n  data: {\n    intent: \"SHIPPING_METHODS\",\n    line_items: [{ variant_id: '...', quantity: '...' }], // Line items in the proposed order. See NEW_ORDER for format of `line_items`\n    address: {\n      address1: '...',\n      address2: '...',\n      city: 'Los Angeles',\n      state: 'CA',\n      zipcode: '90000',\n      country: 'USA',\n      address_type: \"commercial\" || \"residential\"\n    }, // Address to use for estimate\n  }\n}, 'RESELLER_CLIENT_SECRET')\n=> \"JWT.TOKEN.HERE\""
+      description: 'Returns a list of shipping methods and estimated costs for a given order and address.
+
+
+        This API can be accessed using a JWT or an API key.
+
+
+        API Key Authentication
+
+        Requires an API Key in the Authorization header.
+
+
+        Parameters line_items and address should be sent as query parameters if using API Key Authentication.
+
+
+        Example API Key Request
+
+        Single variant:
+
+        GET /api/v1/shipping_methods.json?line_items[][variant_id]=123&line_items[][quantity]=1&address[zipcode]=93101
+
+
+        Multiple variants via product_id:
+
+        GET /api/v1/shipping_methods.json?line_items[][finditparts_product_id]=456&line_items[][quantity]=1&line_items[][finditparts_product_id]=123&line_items[][quantity]=1&address[zipcode]=93101
+
+
+        JWT Authentication
+
+        Requires a JWT in the Authorization header and optionally on behalf of a ''Customer Reference'' (as the JWT sub)
+
+
+        JWT Payload for fetching shipping methods
+
+
+        Each JWT to fetch shipping methods must include the subject header sub which should specify the Customer Reference.
+
+        Each JWT to fetch shipping methods may include a data payload matching the following format (as an alternative to specifying the data in query parameters):
+
+
+        Example JWT payload:
+
+
+        JWT.sign({
+
+        sub: "CUSTOMER_123",
+
+        iss: "acme-corp-sandbox",
+
+        exp: 1600903066,
+
+        data: {
+
+        intent: "SHIPPING_METHODS",
+
+        line_items: [{ variant_id: ''...'', quantity: ''...'' }], // Line items in the proposed order. See NEW_ORDER for format of `line_items`
+
+        address: {
+
+        address1: ''...'',
+
+        address2: ''...'',
+
+        city: ''Los Angeles'',
+
+        state: ''CA'',
+
+        zipcode: ''90000'',
+
+        country: ''USA'',
+
+        address_type: "commercial" || "residential"
+
+        }, // Address to use for estimate
+
+        }
+
+        }, ''RESELLER_CLIENT_SECRET'')
+
+        => "JWT.TOKEN.HERE"'
       parameters:
       - name: line_items
         in: query
